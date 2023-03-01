@@ -1,0 +1,88 @@
+<div class="container-fluid">
+       
+    <div class="row align-items-center py-3 px-xl-5">
+        <div class="col-lg-3 d-none d-lg-block">
+            <a href="" class="text-decoration-none">
+                <h1  style="color: #D19C97;" class="m-0 display-5 font-weight-semi-bold"><span class=" font-weight-bold border px-3 mr-1">E</span>Shopper</h1>
+            </a>
+        </div>
+        <div class="col-lg-6 col-6 text-left">
+            <form action="/search-product">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="search" placeholder="Search for products">
+                    <div class="input-group-append">
+                        <button type="submit" style="border: none;"><span  style="color: #D19C97;" class="input-group-text bg-transparent ">
+                            <i class="fa fa-search"></i>
+                        </span></button>
+                      
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-lg-3 col-6 text-right">
+ <% if(typeof users !== 'undefined'){ %>
+            <div class="dropdown my-2">
+                <button style="width: 40px;height: 40px;border: none;" class="bg-white" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <% if(users == true){ %>
+                    <img style="width: 40px;height: 40px;border-radius: 50%;" src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8dXNlcnxlbnwwfHwwfHw%3D&w=1000&q=80" alt="">
+                    <% } else{ %>
+                        <img style="width: 40px;height: 40px;border-radius: 50%;" src="https://storage.needpix.com/rsynced_images/blank-profile-picture-973460_1280.png" alt="">
+                        <% } %>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="#">Action</a>
+                  <a class="dropdown-item" href="#">Another action</a>
+                 
+                  <% if(users == true){ %>
+                  <a class="dropdown-item" href="/user_logout">Logout</a>
+                  <% } else{ %>
+                    <a class="dropdown-item" href="/user_login">login</a>
+                    <% } %>
+                   
+                </div>
+              </div>
+               <% } %>
+<div>
+    <a href="/show-wishlist" class="btn border">
+                <i style="color: #D19C97;" class="fas fa-heart "></i>
+              
+            </a>
+      
+            <a href="/show-cart" class="btn border">
+                <i  style="color: #D19C97;"  class="fas fa-shopping-cart"></i>
+                
+            </a>
+         
+        </div>
+            
+
+            
+          
+        </div>
+    </div>
+</div>
+
+  <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
+                    <a href="" class="text-decoration-none d-block d-lg-none">
+                        <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1>
+                    </a>
+                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                        <div class="navbar-nav m-auto py-0">
+                            <a href="/userhome" class="nav-item nav-link active">Home</a>
+                            <a href="/shop" class="nav-item nav-link">Shop</a>
+                            <a href="detail.html" class="nav-item nav-link">Shop Detail</a>
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
+                                <div class="dropdown-menu rounded-0 m-0">
+                                    <a href="cart.html" class="dropdown-item">Shopping Cart</a>
+                                    <a href="checkout.html" class="dropdown-item">Checkout</a>
+                                </div>
+                            </div>
+                            <a href="contact.html" class="nav-item nav-link">Contact</a>
+                        </div>
+                       
+                    </div>
+                </nav>

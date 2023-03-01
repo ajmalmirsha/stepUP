@@ -1,0 +1,108 @@
+<%- include("../layouts/header.ejs") %>
+
+
+    <div id="preloader">
+      <div class="jumper">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+    <!-- ***** Preloader End ***** -->
+
+
+    <!-- ***** Header Area Start ***** -->
+    <%- include("../layouts/navbar.ejs") %>
+      <!-- ***** Product Area Starts ***** -->
+
+      <section class="section" id="product">
+        <%singleproduct.forEach((element)=> { %>
+
+          <div class="container">
+            <div class="row container-fluid">
+              <div class="col-lg-8">
+                <div class="left-images">
+                  <div class="img-zoom-container1 row">
+                    <div class="left-images" style="width: 200px;margin-left: -150px;">
+                      <div><img class="small_img d-block" style="width: 200px;" src="/products/<%=element.image[1] %>"
+                          alt=""></div>
+                      <div><img class="small_img d-block" style="width: 200px;" src="/products/<%=element.image[3] %>"
+                          alt=""></div>
+                      <div><img class="small_img d-block" style="width: 200px;" src="/products/<%=element.image[0] %>"
+                          alt=""></div>
+                      <div><img class="small_img d-block" style="width: 200px;" src="/products/<%=element.image[2] %>"
+                          alt=""></div>
+                    </div>
+                    <img id="myimage" style="width: 370px; height: 370px;margin-left: 100px;" class="big_img"
+                      src="/products/<%=element.image[2] %>">
+                    <div id="myresult" class="img-zoom-result"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div style="margin-top: 20px;">
+                  <h1 class="pt-2"><%- element.productname %></h1>
+                  <h5 class="pt-2"><%- element.description %></h5>
+                  <h5 class="pt-2">price :₹ <%- element.price %></h5>
+                  <h5 class="pt-2">catagory : <%- element.catagory.catagory_name %></h5>
+                  <h5 class="pt-2"><%- element.quantity %> more left</h5>
+                  <h5 class="pt-2">Brand : <%- element.brand %></h5>
+                  <a href="" class="btn btn-primary pt-2">Buy now</a>
+                  <a href="/add-to-cart/<%- element._id %>" class="btn btn-warning pt-2">Add to Cart</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <% }) %>
+      </section>
+
+
+
+      <script type="text/javascript">
+        $(document).ready(function () {
+          $(".small_img").click(function () {
+            $(".big_img").attr("src", $(this).attr('src'))
+          })
+        })
+      </script>
+
+      <script type="text/javascript">
+        $(document).ready(function () {
+          $(".big_img").imagezoomsl({
+            zoomrange: [3, 3]
+          })
+
+        })
+      </script>
+
+      <script>
+        if (window.history.replaceState) {
+          window.history.replaceState(null, null, window.location.href);
+        }
+      </script>
+
+      <script src="/user_assets/assets/js/jquery-2.1.0.min.js"></script>
+
+      <!-- Bootstrap -->
+      <script src="/user_assets/assets/js/popper.js"></script>
+      <script src="/user_assets/assets/js/bootstrap.min.js"></script>
+
+      <!-- Plugins -->
+      <script src="/user_assets/assets/js/owl-carousel.js"></script>
+      <script src="/user_assets/assets/js/accordions.js"></script>
+      <script src="/user_assets/assets/js/datepicker.js"></script>
+      <script src="/user_assets/assets/js/scrollreveal.min.js"></script>
+      <script src="/user_assets/assets/js/waypoints.min.js"></script>
+      <script src="/user_assets/assets/js/jquery.counterup.min.js"></script>
+      <script src="/user_assets/assets/js/imgfix.min.js"></script>
+      <script src="/user_assets/assets/js/slick.js"></script>
+      <script src="/user_assets/assets/js/lightbox.js"></script>
+      <script src="/user_assets/assets/js/isotope.js"></script>
+      <script src="/user_assets/assets/js/zoomsl.js"></script>
+      <!-- Global Init -->
+      <script src="/user_assets/assets/js/custom.js"></script>
+
+
+  </body>
+
+  </html>

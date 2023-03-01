@@ -1,0 +1,220 @@
+<%- include("../layouts/header.ejs") %>
+
+    <!-- Navbar Start -->
+    <%- include("../layouts/navbar.ejs") %>
+    <!-- Navbar End -->
+
+    <!-- Page Header Start -->
+    <div class="container-fluid bg-secondary mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+            <h1 class="font-weight-semi-bold text-uppercase mb-3">Shopping Cart</h1>
+            <div class="d-inline-flex">
+                <p class="m-0"><a href="/">Home</a></p>
+                <p class="m-0 px-2">-</p>
+                <p class="m-0">Shopping Cart</p>
+            </div>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+    <!-- Cart Start -->
+    <div class="container-fluid pt-5">
+        <div class="row px-xl-5">
+            <div class="col-lg-8 table-responsive mb-5">
+                <table class="table table-bordered text-center mb-0">
+                    <thead class="bg-secondary text-dark">
+                        <tr>
+                            <th>Image</th>
+                            <th>Products</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th>Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody class="align-middle">
+
+                        <% cartData.cart.forEach(x=>{ %>
+                            <div  id="myDiv">
+                            <tr>
+                                <td><img src="products/<%= x.productId.image[0] %>" alt="" style="width: 50px;"></td>
+                                <td class="align-middle">
+                                    <%= x.productId.productname %>
+                                </td>
+                                <td class="align-middle">₹<%= x.productId.price %>
+                                </td>
+                                <td class="align-middle">
+                                    <div class="input-group quantity mx-auto" style="width: 100px;">
+                                        <div class="input-group-btn">
+                                            <button  onclick="changeQantity('<%= x.productId._id %>',-1,'<%=x.productTotalPrice%>')" class="btn btn-sm btn-primary btn-minus">
+                                                <i class="fa fa-minus"></i>
+                                            </button>
+                                        </div>
+                                            <span id="<%= x.productId._id %>"  class="form-control form-control-sm bg-secondary text-center"><%= x.qty %></span>
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-sm btn-primary btn-plus"
+                                            onclick="changeQantity('<%= x.productId._id %>',1,'<%=x.productTotalPrice%>')">+</button>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="align-middle">₹<span class="<%= x.productId._id %>"><%=x.productTotalPrice%></span></td>
+                                <td class="align-middle">
+                                <a href="/delete-from-cart/<%= x.productId._id %>"> <button onclick="deleteCart('<%= x.productId._id %>')" class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button></a></td>
+                            </tr>
+                        </div>
+                    <% }) %>
+  
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-lg-4">
+                <form class="mb-5" action="/coupon-apply" method="post">
+                    <div class="input-group">
+                    
+                        <input type="text" class="form-control p-4" name="coupon" placeholder="Coupon Code">
+                        <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Apply Coupon</button>
+                        </div>
+                   
+                    </div>
+                </form>
+                <div class="card border-secondary mb-5">
+                    <div class="card-header bg-secondary border-0">
+                    <h4 class="font-weight-semi-bold m-0">Cart Summary</h4>
+                    </div>
+                    <div class="card-body">  
+                    </div>
+                    <div class="card-footer border-secondary bg-transparent">
+                        <% if(typeof coupons !== 'undefined'){ %>
+                            <div>
+                                <p><span>coupon name :</span><%- coupons.coupon_name %></p>
+                                <p><span>description :</span><%- coupons.description %></p>
+                                <p><span>discount price:</span><%- coupons.discountPrice %></p>
+                                <p><span>coupon code :</span><%- coupons.code %></p>
+                            </div>
+                        <% } %>
+                        <div class="d-flex justify-content-between mt-2">
+                            <h5 class="font-weight-bold">Total</h5>
+                            <h5  id="ctotal" class="font-weight-bold">₹<span class='totalamount'><%= cartData.cartTotalPrice %></span></h5>
+                        </div>
+                        <button class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Cart End -->
+
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-secondary text-dark mt-5 pt-5">
+        <div class="row px-xl-5 pt-5">
+            <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
+                <a href="" class="text-decoration-none">
+                   <h1 class="mb-4 display-5 font-weight-semi-bold">
+                     <span class="text-primary font-weight-bold border border-white px-3 mr-1">E</span>Shopper</h1>
+                </a>
+                <p>Dolore erat dolor sit lorem vero amet. Sed sit lorem magna, ipsum no sit erat lorem et magna ipsum dolore amet erat.</p>
+                <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>123 Street, New York, USA</p>
+                <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>info@example.com</p>
+                <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+012 345 67890</p>
+            </div>
+            <div class="col-lg-8 col-md-12">
+                <div class="row">
+                    <div class="col-md-4 mb-5">
+                        <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
+                        <div class="d-flex flex-column justify-content-start">
+                            <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                            <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our
+                                Shop</a>
+                            <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop
+                                Detail</a>
+                            <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping
+                                Cart</a>
+                            <a class="text-dark mb-2" href="checkout.html"><i
+                                    class="fa fa-angle-right mr-2"></i>Checkout</a>
+                            <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact
+                                Us</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-5">
+                        <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
+                        <div class="d-flex flex-column justify-content-start">
+                            <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                            <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our
+                                Shop</a>
+                            <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop
+                                Detail</a>
+                            <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping
+                                Cart</a>
+                            <a class="text-dark mb-2" href="checkout.html"><i
+                                    class="fa fa-angle-right mr-2"></i>Checkout</a>
+                            <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact
+                                Us</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-5">
+                        <h5 class="font-weight-bold text-dark mb-4">Newsletter</h5>
+                        <form action="">
+                            <div class="form-group">
+                                <input type="text" class="form-control border-0 py-4" placeholder="Your Name"
+                                    required="required" />
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control border-0 py-4" placeholder="Your Email"
+                                    required="required" />
+                            </div>
+                            <div>
+                              
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+    <script>
+
+    function deleteCart(proId){
+        alert("Are You Sure To Delete")
+    }
+
+    </script>
+
+
+    <script>
+
+    function changeQantity(proId, count, ptotal) {
+    let quantity = parseInt(document.getElementById(proId).innerHTML)
+        
+            count = parseInt(count)
+            if(quantity <=1 && count == -1){ 
+            }else{
+            $.ajax({
+
+                url: '/change-Product-Quantity',
+                method: "post",
+                data: {
+                    product: proId,
+                    count: count,
+                    ptotal:ptotal
+                },
+                success: (response)=>{
+                    document.getElementById(proId).innerHTML = quantity + count
+                    document.getElementsByClassName(proId)[0].innerHTML = response.productprice
+                    document.getElementsByClassName('totalamount')[0].innerHTML=response.cartTotal
+                }
+            })
+        }
+        }
+        
+    </script>
+
+
+
+<%- include("../layouts/footer.ejs") %>

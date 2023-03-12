@@ -1,10 +1,7 @@
 <%- include("../layouts/header.ejs") %>
-
-    <!-- Topbar Start -->
-   
-    <!-- Topbar End -->
-
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+    crossorigin="anonymous"></script>
     <!-- Navbar Start -->
     <%- include("../layouts/navbar.ejs") %>
   
@@ -48,8 +45,8 @@
                         <td><img src="products/<%- x.product.image[0] %>" style="width: 50px;" alt=""></td>
                         <td><%- x.product.productname %></td>
                         <td><%- x.product.price %></td>
-                        <td><button class="btn btn-warning"><a href="/add-to-cart/<%- x.product._id %>">Add To Cart</a></button></td>
-                        <td><button class="btn btn-danger"><a href="/delete-wishlist/<%- x.product._id %>">Delete</a></button></td>
+                        <td><button class="btn btn-warning" onclick="addCart('<%- x.product._id %>')">Add To Cart</button></td>
+                        <td><button class="btn btn-danger" onclick="del('<%- x.product._id %>')">Delete</button></td>
                          
                     </tr>
                      <% }) %>
@@ -146,6 +143,65 @@
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
+
+    
+    <script>
+        function addCart(id){
+         $.ajax({
+              url : "/add-to-cart/"+id ,
+            success: (response)=>{
+             if(response.success){
+                  Swal.fire({
+           title: 'Added to Cart!',
+           text: 'Your product Added to cart',
+           icon: 'success',
+           showConfirmButton: false
+          })
+             }else{
+                 Swal.fire({
+           title: 'item already exist in cart !',
+           text: 'Your product not Added to cart',
+           icon: 'warning',
+           showConfirmButton: false
+          })
+             }
+            }
+         })
+      
+         }
+     </script>
+
+     <script>
+      function  del(id){
+        Swal.fire({
+          title: 'Are you sure?',
+          text: "You wan't to delete this product!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'yes,delete!'
+      }).then((result)=>{
+        if(result.isConfirmed){
+        $.ajax({
+          url : "/delete-wishlist/"+id ,
+          method: 'get',
+                              success: (response) => {
+                                  Swal.fire({
+                                      title: 'Removed!',
+                                      text: 'Your product removed',
+                                      icon: 'success',
+                                      showConfirmButton: false
+                                  })
+                                  setTimeout(() => {
+                                      location.reload()
+                                  }, 1000);
+                              }
+            })
+        }})
+        }
+     </script>
+ 
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

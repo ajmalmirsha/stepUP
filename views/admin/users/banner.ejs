@@ -137,6 +137,14 @@
                           <div data-i18n="Documentation">Coupons</div>
                         </a>
                       </li>
+                      <li class="menu-item">
+                        <a
+                          href="/admin/orders"
+                          class="menu-link">
+                          <i class="menu-icon tf-icons bx bx-file"></i>
+                          <div data-i18n="Documentation">Orders</div>
+                        </a>
+                      </li>
                 </ul>
               </aside>
               <!-- / Menu -->
@@ -170,7 +178,7 @@
             <td scope="row"><img src="/banner-img/<%- x.image %>" alt="" style="width: 100px;"></td>
             <td> 
               <a href="/admin/edit-banner/<%- x._id %>" class="btn btn-primary" >EDIT</a>
-              <a href="/admin/delete-banner/<%- x._id %>" class="btn btn-danger" onclick="conf()">DELETE</a>
+              <a  class="btn btn-danger" onclick="del('<%- x._id %>')">DELETE</a>
             </td>
           </tr>
    <% }) %>
@@ -180,8 +188,37 @@
         
       </table>
 <script>
-  function conf(){
-    alert('are you sure to delete this banner !!')
+  function del(id){
+    Swal.fire({
+          title: 'Are you sure?',
+          text: "You wan't to delete this banner !",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'yes,delete!'
+      }).then((result)=>{
+        if(result.isConfirmed){
+            $.ajax({
+          url : "/admin/delete-banner/"+id ,
+          method: 'get',
+                              success: (response) => {
+                                  Swal.fire({
+                                      title: 'Removed!',
+                                      text: 'Your banner removed',
+                                      icon: 'success',
+                                      showConfirmButton: false
+                                  })
+                                  setTimeout(() => {
+                                      location.reload()
+                                  }, 1000);
+                              }
+            })
+        }
+      })
+
+       
+
   }
 </script>
 

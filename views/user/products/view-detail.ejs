@@ -34,7 +34,7 @@
                           alt=""></div>
                     </div>
                     <img id="myimage" style="width: 370px; height: 370px;margin-left: 100px;" class="big_img"
-                      src="/products/<%=element.image[2] %>">
+                      src="/products/<%=element.image[0] %>">
                     <div id="myresult" class="img-zoom-result"></div>
                   </div>
                 </div>
@@ -47,7 +47,7 @@
                   <h5 class="pt-2">catagory : <%- element.catagory.catagory_name %></h5>
                   <h5 class="pt-2"><%- element.quantity %> more left</h5>
                   <h5 class="pt-2">Brand : <%- element.brand %></h5>
-                  <a href="" class="btn btn-primary pt-2">Buy now</a>
+                  <!-- <a href="" class="btn btn-primary pt-2">Buy now</a> -->
                   <a href="/add-to-cart/<%- element._id %>" class="btn btn-warning pt-2">Add to Cart</a>
                 </div>
               </div>

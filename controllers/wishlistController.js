@@ -15,7 +15,7 @@ module.exports ={
             console.log("showing wish list");
             const data = await user.findOne({email:req.session.email}).populate('wishlist.product').exec()
             console.log("whis data : "+data);
-            res.render('wishlist/wishlist',{data})
+            res.render('wishlist/wishlist',{data,users:true})
         } catch (error) {
             console.log(error.message);
         }
@@ -25,9 +25,11 @@ module.exports ={
             const exist = await user.findOne({email:req.session.email,"wishlist.product":req.params.id})
             if(exist){
           console.log("item already in wishlist !!");
+          res.json({failed:true})
             }else{
                  const wishlistInserted = await user.updateOne({ email: req.session.email }, { $push: { wishlist: { product: req.params.id } } })
             console.log("item added to wishlist");  
+            res.json({success:true})
             }
      
         } catch (error) {
@@ -37,7 +39,7 @@ module.exports ={
     delete_wishlist: async (req,res)=>{
         try {
             await user.updateOne({email:req.session.email},{$pull:{wishlist:{product:req.params.id}}})
-            res.redirect('/show-wishlist')
+            res.json({success:true})
         } catch (error) {
           console.log(error.message);
         }

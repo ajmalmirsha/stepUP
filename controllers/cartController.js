@@ -27,7 +27,7 @@ module.exports ={
 
           exist = null
           console.log("item already exist in cart !!");
-
+          res.json({failed : true})
         }else{
 
         const products = await product.findOne({_id:req.params.id})
@@ -36,8 +36,9 @@ module.exports ={
         const  result =  await  user.updateOne({email:req.session.email},{$push:{cart:{productId:products._id,qty:1,price:products.price,productTotalPrice:products.price}}})
          
         await user.updateOne({email:req.session.email},{$set:{cartTotalPrice:totalprice}})
-       
+        
         if(result){
+          res.json({success : true})
          console.log('added item to cart');
         }else{
         console.log('added not item to cart');
@@ -46,14 +47,14 @@ module.exports ={
       } catch (error) {
         console.log(error.message);
       }
-    },
+    },  
     show_cart: async (req,res)=>{
       try {
 
         console.log("showing cart...");
         const data = user.findOne({email:req.session.email})
         const cartData=await user.findOne({email:req.session.email}).populate('cart.productId').exec()
-        res.render('cart/cart',{cartData})
+        res.render('cart/cart',{cartData,users:true})
 
       } catch (error) {
         console.log(error.message);
@@ -67,7 +68,28 @@ module.exports ={
 
         const count = req.body.count
         const prodId = req.body.product
+        // const counter =  count - (count *2)
+        // console.log(counter);
+
+        const ss = await product.findById(prodId)
       
+
+        // const ObjectId = require('mongodb').ObjectId;
+
+      //   const counter = await user.findOne({ 
+      //   email: req.session.email,
+      //   "cart.productId": prodId
+      // }).populate("cart.productId")
+  
+      //  console.log("ss.quantity :"+ss.quantity);
+      
+      //  console.log("counter.qty :"+counter.cart[0].qty);
+      //  if(ss.quantity > counter.cart[0].qty){
+
+
+      //      console.log(counter);
+       
+
         const inc = await user.updateOne({ email: req.session.email, "cart.productId": prodId }, {$inc: { 'cart.$.qty': count } })
 
         const productdetails = await product.findOne({_id:prodId})
@@ -90,10 +112,12 @@ module.exports ={
         res.json({ success: true,productprice,cartTotal})
 
         if(inc){
-        console.log("done incccc");
+        console.log("done inc");
         }else{
         console.log("failedddddd");
         }
+    
+      
       } catch (error) {
         console.log(error.message);
       }
@@ -117,7 +141,8 @@ module.exports ={
        const cartData=await user.findOne({email:req.session.email}).populate('cart.productId').exec()
 
        console.log("deleted from cart....");
-       res.redirect('/show-cart')
+       res.json({success:true})
+      //  res.redirect('/show-cart')
 
       } catch (error) {
         console.log(error.message);

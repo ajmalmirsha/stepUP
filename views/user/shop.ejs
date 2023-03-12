@@ -1,7 +1,9 @@
 <%- include("./layouts/header.ejs") %>
 
 
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+    crossorigin="anonymous"></script>
     <!-- Topbar Start -->
     <%- include("./layouts/navbar.ejs") %>
     <!-- Topbar End -->
@@ -41,14 +43,20 @@
                         <div class="d-flex align-items-center justify-content-between mb-4">
                             <form action="/search-product" method="post">
                                 <div class="input-group">
+                                    <% if(typeof search !== 'undefined'){ %>
+                                        <input type="text" value="<%- search %>" name="search" class="form-control" placeholder="Search by name">
+                                        <% }else{ %>
                                     <input type="text" name="search" class="form-control" placeholder="Search by name">
+                                    <% } %>
                                     <div class="input-group-append">
                                        <button  style="border: none;" type="submit"> 
                                          <span class="input-group-text bg-transparent text-primary">
                                             <i class="fa fa-search"></i>
                                         </span>
                                     </button>
-                                      
+                                      <% if(typeof search !== 'undefined'){ %>
+                                     <button>  <a href="/shop">clear</a> </button>
+                                        <% } %>
                                       
                                     </div>
                                 </div>
@@ -93,7 +101,7 @@
                             </div>
                             <div class="card-footer d-flex justify-content-between bg-light border">
                                 <a href="/view-detail/<%- datas._id %>" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                                <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
+                                <a onclick="addCart('<%- datas._id %>')" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
                             </div>
                         </div>
                     </div>
@@ -203,7 +211,32 @@
       
     </div>
     <!-- Footer End -->
-
+    <script>
+        function addCart(id){
+            
+         $.ajax({
+              url : "/add-to-cart/"+id ,
+            success: (response)=>{
+             if(response.success){
+                  Swal.fire({
+           title: 'Added to Cart!',
+           text: 'Your product Added to cart',
+           icon: 'success',
+           showConfirmButton: false
+          })
+             }else{
+                 Swal.fire({
+           title: 'item already exist in cart !',
+           text: 'Your product not Added to cart',
+           icon: 'warning',
+           showConfirmButton: false
+          })
+             }
+            }
+         })
+      
+         }
+     </script>
 
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>

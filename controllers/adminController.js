@@ -13,7 +13,10 @@ var objectId=require('mongodb').ObjectId
 const fs = require('fs')
 
 const path = require('path')
+const { populate } = require('../models/catagory')
 
+const moment =  require('moment')
+const orderModel = require('../models/orderModel')
 
 
 
@@ -44,7 +47,7 @@ module.exports = {
     try{
     if(req.session.admin){
      
-      res.render('adminhome')
+      res.redirect('/admin/adminhome')
  
     }else if(req.session.log){
         req.session.log=false
@@ -62,10 +65,27 @@ module.exports = {
 },
 adddata: async (req,res)=>{
     try{
+        if(
+            req.body.catagory==""||
+            req.body.price==''||
+            req.body.description==''||
+            req.body.Quantity==''||
+            req.body.brand==''
+        ){
+            const data = await catagory.find()
+            const brands = await brand.find()
+            res.render('products/addproduct',{data,brands,err:"allfeilds are required"})
+        }
    const images = []
 
     for(file of req.files){
         images.push(file.filename)
+    }
+    if(images.length == 0){
+        const data = await catagory.find()
+        const brands = await brand.find()
+        res.render('products/addproduct',{data,brands,err:"allfeilds are required"})
+       
     }
 
    const Data= new product({productname:req.body.productname,
@@ -112,12 +132,204 @@ adddata: async (req,res)=>{
 },
 adminhome : async (req,res)=>{
     try{
-    console.log("test 1");
-    if(req.session.admin){
-     res.redirect("/admin")
-    }else{
-        res.redirect('/adminlogin')
-    }
+        const ord=await orderModel.find().populate({
+            path: 'product.productId',
+            populate: {
+                path: 'catagory',
+                model: catagory
+            }
+          })
+          const catagoryCount = {};
+          
+          ord.forEach(order => {
+              order.product.forEach(product => {
+                  const catagory = product.productId.catagory.catagory_name;
+                  if (catagory in catagoryCount) {
+                      catagoryCount[catagory] += 1;
+                  } else {
+                      catagoryCount[catagory] = 1;
+                  }
+              });
+          });
+          const catacount = Object.entries(catagoryCount).sort((a, b) => b[1] - a[1]);
+          
+          console.log(catacount);
+ 
+
+const numbersOnly = catacount.map(innerArray => innerArray[1]);
+
+          
+console.log("numbers"+numbersOnly);
+
+
+
+
+const categoryNames = catacount.map((categoryCount) => {
+  return categoryCount[0];
+});
+
+console.log(categoryNames);
+
+const ordercount = await orderModel.find({status:"delevered"}).count()
+
+
+
+
+
+
+        
+        
+        const salesChart = await orderModel.aggregate([
+          
+            {
+              $group: {
+                _id: { $dateToString: { format: '%Y-%m-%d', date: '$date' } },
+                sales: { $sum: '$cartTotalPrice' },
+              },
+            },
+            {
+              $sort: { _id: -1 },
+            },
+            {
+              $limit: 7,
+            },
+          ]);
+          
+
+          const dates = salesChart.map((item) => {
+            return item._id;
+          })
+      
+          const sale = salesChart.map((item) => {
+            return item.sales;
+          });
+
+
+      const salesr = sale.map((x)=>{
+        return x
+      })
+     
+      const date = dates.reverse()
+
+     const sales = salesr.reverse()
+
+     const cata = await orderModel.aggregate([
+        {
+            $group: {
+                _id: "$productId.category",
+                cata: {
+                    $sum: "$cartTotalPrice"
+                }
+            }
+        }
+    ]);
+    
+    const upiPayments = await orderModel.aggregate([
+       {$group:{ _id: {paymentMethod:"UPI"}}}
+    ])
+
+    //   console.log("sales :"+ sales);
+    console.log("cataaas :" + cata);
+
+      console.log("cataaas :" + cata.cata);
+
+   
+      // catagory wise sales
+
+      
+     const pipeline =[
+        // match orders with the desired status
+        { $match: { status: "delevered" } },
+        
+        // unwind the product array to create a document for each product
+        { $unwind: "$product" },
+        
+        // lookup the product's category
+        {
+          $lookup: {
+            from: "categories",
+            localField: "product.productId",
+            foreignField: "products",
+            as: "category"
+          }
+        },
+        
+        // unwind the category array
+        { $unwind: "$category" },
+        
+        // group by category and sum the productTotalPrice for each category
+        {
+          $group: {
+            _id: "$category._id",
+            cartTotalPrice: { $sum: "$product.productTotalPrice" }
+          }
+        }
+      ];
+      
+
+console.log("cata :");
+ await orderModel.aggregate(pipeline)
+  .then(result => {
+    console.log(result);
+    console.log(result.category);
+    // do something with the result...
+  })
+console.log(pipeline);
+//total saless
+
+  const totalSales = await orderModel.find({status:"delevered"})
+// console.log(totalSales);
+let sum = 0
+for(var i=0;i<totalSales.length ; i++){
+    sum =sum+totalSales[i].cartTotalPrice
+}
+const today = new Date()
+
+const yesterday = new Date(today);
+yesterday.setDate(today.getDate() - 1); // set yesterday's date by subtracting 1 day from today
+
+
+const yesterdaySalesof = await orderModel.find({status:"delevered",date:yesterday})
+let yesterdaySalesSum = 0
+for(var i=0;i<yesterdaySalesof.length ; i++){
+    yesterdaySalesSum =yesterdaySalesSum + yesterdaySalesof[i].cartTotalPrice
+}
+
+console.log(today);
+
+
+const todaySalesof = await orderModel.find({status:"delevered",date:today})
+let todaySalesSum = 0
+for(var i=0;i<todaySalesof.length ; i++){
+    todaySalesSum =todaySalesSum+todaySalesof[i].cartTotalPrice
+}
+console.log("yesterday sale :"+ yesterdaySalesSum);
+console.log("today sale :"+ todaySalesof);
+
+
+
+// console.log("totalSales :"+sum);
+// console.log(UPI[0].sum);
+
+
+// payment metthod wise pie chart
+
+const UPI = await orderModel.find({status:"delevered",paymentMethod:"UPI"}).count()
+const COD = await orderModel.find({status:"delevered",paymentMethod:"COD"}).count()
+console.log(UPI,COD);
+
+        res.render('adminhome',{
+            date,
+            sales,
+            sum,
+            UPI,
+            COD,
+            catacount,
+            numbersOnly,
+            categoryNames,
+            ordercount
+        })
+ 
     
     }catch(error){
         console.log(error.message);
@@ -141,9 +353,9 @@ addproduct: async (req,res)=>{
 show_product: async (req,res)=>{
     try{
     const cata= await product.find({})
-    const data= await product.find({}).populate('catagory').exec()
+    const data= await product.find({}).populate('catagory').populate('brand').exec()
     console.log("populate cata.catagory :",cata);
-    res.render("products/products",{data,cata})
+    res.render("products/products",{data,cata,moment:moment})
     }catch(error){
         console.log(error.message);
     }
@@ -172,7 +384,7 @@ delete_product: async(req,res)=>{
 },
 edit_product: async (req,res)=>{
     try{
-   const data = await  product.findOne({_id:req.params.id}).populate('catagory').exec()
+   const data = await  product.findOne({_id:req.params.id}).populate('catagory').populate('brand').exec()
    const cata = await  catagory.find()
    const brands = await brand.find()
    res.render("products/edit-product",{data,cata,brands})
@@ -271,10 +483,10 @@ edit_category: async (req,res)=>{
 
     }catch(error){
         console.log(error.code);
-        if(error.code){
+        if(error.code == 11000){
 
             const data= await catagory.findOne({_id:req.params.id})
-   
+         console.log("chacherrrrrrdddwdwdd");
            res.render('products/edit-catagory',{data,message:"this catagory already exist"})
         }else{
             console.log(error.message);
@@ -289,14 +501,14 @@ edit_category_page: async (req,res)=>{
     }catch(error){
         console.log(error.message);
     }
-  
+      
 },
 view_product_page: async (req,res)=>{
     try{
   const data = await product.findOne({_id:req.params.id}).populate('catagory').exec()
   
      
-     res.render('products/view-product',{data})
+     res.render('products/view-product',{data,moment:moment})
     }catch(error){
         console.log(error.message);
     }

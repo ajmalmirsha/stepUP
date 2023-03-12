@@ -9,16 +9,23 @@ const couponSchema= new mongoose.Schema({
         type:String,
         required:true
     },
-    price:{
+    maxdiscountprice:{
         type:Number
     },
-    discountPrice:{
+    discountpercentage:{
         type:Number
+    },
+    date:{
+    type:Date
     },
     code:{
         type:String
+    },
+    used:{
+        type:Array
     }
 })
+
 
 
 module.exports = mongoose.model('coupon',couponSchema)

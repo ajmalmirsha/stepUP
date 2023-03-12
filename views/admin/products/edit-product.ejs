@@ -138,6 +138,14 @@
                     <div data-i18n="Documentation">Coupons</div>
                   </a>
                 </li>
+                <li class="menu-item">
+                  <a
+                    href="/admin/orders"
+                    class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-file"></i>
+                    <div data-i18n="Documentation">Orders</div>
+                  </a>
+                </li>
           </ul>
         </aside>
         <!-- / Menu -->
@@ -184,9 +192,9 @@
 
                   <div class="mb-3">
                     <select name="brand" class="form-select" aria-label="Default select example">
-                      <option selected><%- data.brand %></option>
+                      <option value="<%- data.brand._id %>" selected><%- data.brand.name %></option>
                       <% brands.forEach((data)=>{ %>
-                        <option value="<%- data.name %>"><%- data.name %></option>
+                        <option value="<%- data._id %>"><%- data.name %></option>
                         <% }) %>
                     </select>
                   </div>
@@ -196,14 +204,14 @@
                   <div class="mb-3">
                     <label class="form-label" for="basic-default-email">Quantity</label>
                     <div class="input-group input-group-merge">
-                      <input value="<%- data.quantity %>" type="text" id="basic-default-email" class="form-control"
+                      <input value="<%- data.quantity %>" type="number" id="basic-default-email" class="form-control"
                         name="Quantity" />
 
                     </div>
                     <div class="mb-3">
                       <label class="form-label" for="basic-default-email">Price</label>
                       <div class="input-group input-group-merge">
-                        <input value="<%- data.price %>" type="text" id="basic-default-email" class="form-control"
+                        <input value="<%- data.price %>" type="number" id="basic-default-email" class="form-control"
                           name="price" />
 
                       </div>
@@ -232,7 +240,7 @@
 
                     <!-- hgfhgh -->
 
-                    <button style="display: block;" type="submit" class="btn btn-primary my-2">Send</button>
+                    <button style="display: block;" type="submit" class="btn btn-primary my-2">Edit</button>
 
                 </form>
 
@@ -293,32 +301,13 @@
 
                               <button type="submit" class="btn btn-primary">submit</button>
 
-                              <!-- <button type="submit" class="btn btn-primary">Understood</button> -->
-                              <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
-
                         </form>
-
-
-
-
-
-
-
-
-
-
 
 
                       </div>
                     </div>
                   </div>
                 </div>
-
-
-
-
-
-
 
               </div>
             </div>

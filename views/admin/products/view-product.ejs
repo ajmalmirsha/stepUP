@@ -139,6 +139,14 @@
                           <div data-i18n="Documentation">Coupons</div>
                         </a>
                       </li>
+                      <li class="menu-item">
+                        <a
+                          href="/admin/orders"
+                          class="menu-link">
+                          <i class="menu-icon tf-icons bx bx-file"></i>
+                          <div data-i18n="Documentation">Orders</div>
+                        </a>
+                      </li>
                 </ul>
               </aside>
 
@@ -176,21 +184,18 @@
                 <p><%- data.description %></p>
                 <p>price :₹ <span><%- data.price %></span></p>
                 <p><span>catagory :</span> <%- data.catagory.catagory_name %></p>
-                <p><span>Date :</span> <%- data.Date %></p>
+                <p><span>Date :</span>  <% const date = data.Date %>   <%=moment().format("Do MMM YYYY");   %></p>
              
                 <p><span>quantity :</span> <%- data.quantity %></p>
               
                 
              </div></td>
               <tr><td>
-                  <% for(var i=0;i<=3;i++){ %>
+                  <% for(var i=0;i<=   data.image.length ;i++){ %>
                   <img class="small_img"  src="/products/<%=  data.image[i] %>" alt=""  style="width: 100px;height: auto;border: solid rgba(128, 128, 128, 0.379);">
              <%   }  %>
             
             </td></tr>
-              
-         
-        
             </tbody>
         </table>
          

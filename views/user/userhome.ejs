@@ -1,4 +1,7 @@
 <%- include("../user/layouts/header.ejs") %>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+    crossorigin="anonymous"></script>
     <!-- Topbar Start -->
     <%- include("../user/layouts/navbar.ejs") %>
     <!-- Topbar End -->
@@ -160,7 +163,7 @@
                     </div>
                     <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                         <div style="float: right;margin-right: 10px;margin-top: 10px;"> 
-                            <a href="/add-to-wish-list/<%- data._id %>"><i style="color: #D19C97;" class="fas fa-heart "></i></a>
+                            <a onclick="addwishlist('<%- data._id %>')"><i style="color: #D19C97;" class="fas fa-heart "></i></a>
                         </div> 
 
                         <h6 class="text-truncate mb-3"><%- data.productname %></h6>
@@ -171,7 +174,7 @@
                     <div class="card-footer d-flex justify-content-between bg-light border">
                         
                         <a href="/view-detail/<%- data._id %>" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                        <a href="/add-to-cart/<%- data._id %>" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
+                        <a  onclick="addCart('<%- data._id %>')" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
                     </div>
                 </div>
             </div>
@@ -232,7 +235,7 @@
                     </div>
                     <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                         <div style="float: right;margin-right: 10px;margin-top: 10px;"> 
-                            <a href="/add-to-wish-list/<%- data._id %>"><i style="color: #D19C97;" class="fas fa-heart "></i></a>
+                            <a  onclick="addwishlist('<%- data._id %>')"><i style="color: #D19C97;" class="fas fa-heart "></i></a>
                         </div> 
                         <h6 class="text-truncate mb-3"><%- data.productname %></h6>
                         <div class="d-flex justify-content-center">
@@ -241,7 +244,7 @@
                     </div>
                     <div class="card-footer d-flex justify-content-between bg-light border">
                         <a href="/view-detail/<%- data._id %>" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                        <a href="/add-to-cart/<%- data._id %>" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
+                        <a onclick="addCart('<%- data._id %>')" class="btn btn-sm text-dark p-0" ><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
                     </div>
                 </div>
             </div>
@@ -270,7 +273,7 @@
                 <div class="owl-carousel vendor-carousel">
 
                     <% brands.forEach((data)=>{  %>
-                        <a href="/brands/<%- data.name %>">
+                        <a href="/brands/<%- data._id %>">
                     <div class="vendor-item border p-4">
                         <img src="/brands/<%- data.image %>" alt="">
                     </div>
@@ -354,5 +357,62 @@
 
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+
+    <script>
+       function addCart(id){
+        $.ajax({
+             url : "/add-to-cart/"+id ,
+           success: (response)=>{
+            if(response.success){
+
+                 Swal.fire({
+          title: 'Added to Cart!',
+          text: 'Your product Added to cart',
+          icon: 'success',
+          showConfirmButton: false
+         
+
+         })
+
+            }else{
+                Swal.fire({
+          title: 'item already exist in cart !',
+          text: 'Your product not Added to cart',
+          icon: 'warning',
+          showConfirmButton: false
+         })
+            }
+           }
+        })
+     
+        }
+    </script>
+
+    <script>
+        function addwishlist(id){
+            $.ajax({
+             url : "/add-to-wish-list/"+id ,
+           success: (response)=>{
+            if(response.success){
+                 Swal.fire({
+          title: 'Added to wishlist!',
+          text: 'Your product Added to wishlist',
+          icon: 'success',
+          showConfirmButton: false
+         })
+            }else{
+                Swal.fire({
+          title: 'item already exist in wishlist !',
+          text: 'Your product not Added to wishlist',
+          icon: 'warning',
+          showConfirmButton: false
+         })
+            }
+           }
+        })  
+        }
+    </script>
 
 <%- include("../user/layouts/footer.ejs") %>

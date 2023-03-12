@@ -1,4 +1,7 @@
 <%- include("../layouts/header.ejs")%>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+    crossorigin="anonymous"></script>
  
         <!-- Menu -->
                 <!-- Menu -->
@@ -137,6 +140,14 @@
                             <div data-i18n="Documentation">Coupons</div>
                           </a>
                         </li>
+                        <li class="menu-item">
+                          <a
+                            href="/admin/orders"
+                            class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-file"></i>
+                            <div data-i18n="Documentation">Orders</div>
+                          </a>
+                        </li>
                   </ul>
                 </aside>
                 <!-- / Menu -->
@@ -176,8 +187,8 @@
             <td> <%- data.productname %></td>
             <td> <%- data.catagory.catagory_name %></td>
             <td> <%- data.price %></td>
-            <td> <%- data.brand %></td>
-            <td> <%- data.Date %></td>
+            <td> <%- data.brand.name %></td>
+            <td> <% const date =  data.Date %>   <%=moment().format("Do MMM YYYY");   %></td>
             <td> <% if(data.quantity > 5){ %>
                     <p style="color: green">in stock</p>
                      <% }else if(data.quantity <= 0){ %>
@@ -211,7 +222,7 @@
                   <li><a href="/admin/unlist-product/<%- data._id %>"  class="btn btn-warning d-block my-1">list/unlist</a></li>
                   <li> <a href="/admin/view-product/<%- data._id %>" class="btn btn-secondary d-block my-1">View</a></li>
                   <li> <a href="/admin/edit-product/<%- data._id %>" class="btn btn-primary d-block my-1" >EDIT</a></li>
-                  <li> <a href="/admin/delete-product/<%- data._id %>" onclick="conf()" class="btn btn-danger d-block my-1">DELETE</a></li>
+                  <li> <a  onclick="conf('<%- data._id %>')" class="btn btn-danger d-block my-1">DELETE</a></li>
                 </ul>
               </div>
 
@@ -231,8 +242,38 @@
       </table>
 
       <script>
-        function conf(){
-          alert("are you sure to delete the product")
+        function conf(id){
+          Swal.fire({
+          title: 'Are you sure?',
+          text: "You wan't to delete this product!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'yes,delete!'
+      }).then((result)=>{
+        if(result.isConfirmed){
+            $.ajax({
+          url : "/admin/delete-product/"+id ,
+          method: 'get',
+                              success: (response) => {
+                                  Swal.fire({
+                                      title: 'Removed!',
+                                      text: 'Your product removed',
+                                      icon: 'success',
+                                      showConfirmButton: false
+                                  })
+                                  setTimeout(() => {
+                                      location.reload()
+                                  }, 1000);
+                              }
+            })
+        }
+      })
+
+       
+
+          
         }
        
       </script>

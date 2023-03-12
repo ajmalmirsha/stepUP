@@ -137,6 +137,14 @@
                                   <div data-i18n="Documentation">Coupons</div>
                                 </a>
                               </li>
+                              <li class="menu-item">
+                                <a
+                                  href="/admin/orders"
+                                  class="menu-link">
+                                  <i class="menu-icon tf-icons bx bx-file"></i>
+                                  <div data-i18n="Documentation">Orders</div>
+                                </a>
+                              </li>
                         </ul>
                       </aside>
                       <!-- / Menu -->
@@ -176,7 +184,7 @@
                 </div>
                 <label class="form-label" for="basic-default-message">Image</label>
 
-                <input type="file" name="image" accept="image/*" required >
+                <input type="file"  onchange="show(this)" name="image" accept="image/*" required >
 
                 <% if(typeof err !== 'undefined'){ %>
                     <p style="color: red;"><%= err %></p>
@@ -190,6 +198,28 @@
         </div>
       
 <!-- product table -->
-
+<script>
+  function show(input) {
+    debugger;
+    var validExtensions = ['jpg', 'png', 'jpeg']; //array of valid extensions
+    var fileName = input.files[0].name;
+    var fileNameExt = fileName.substr(fileName.lastIndexOf('.') + 1);
+    if ($.inArray(fileNameExt, validExtensions) == -1) {
+      input.type = ''
+      input.type = 'file'
+      $('#user_img').attr('src', "");
+      alert("Only these file types are accepted : " + validExtensions.join(', '));
+    }
+    else {
+      if (input.files && input.files[0]) {
+        var filerdr = new FileReader();
+        filerdr.onload = function (e) {
+          $('#user_img').attr('src', e.target.result);
+        }
+        filerdr.readAsDataURL(input.files[0]);
+      }
+    }
+  }
+</script>
 
 <%- include("../layouts/footer.ejs") %>

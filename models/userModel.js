@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
     },
     email:{
         type:String,
+        unique: true,
         required:true
     },
     password:{
@@ -62,7 +63,39 @@ const userSchema = new mongoose.Schema({
           ref: "products",
           required: true
         }
-      }]
+      }],
+      address: [
+        {
+          name: {
+            type: String,
+            required: true
+          },
+          street: {
+            type: String,
+            required: true
+          },
+          district: {
+            type: String,
+            required: true
+          },
+          state: {
+            type: String,
+            required: true
+          },
+          pincode: {
+            type: String,
+            required: true
+          },
+          country: {
+            type: String,
+            required: true
+          },
+          phone: {
+            type: Number,
+            required: true
+          },
+        }
+      ]
 })
 
 module.exports = mongoose.model("users",userSchema)

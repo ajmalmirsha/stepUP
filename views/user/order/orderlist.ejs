@@ -1,0 +1,69 @@
+<%- include("../layouts/header.ejs") %>
+
+
+
+    <!-- Topbar Start -->
+    <%- include("../layouts/navbar.ejs") %>
+    <!-- Topbar End -->
+    
+    <!-- <h1><%- userdatas.username %></h1> -->
+
+    <table class="table">
+        <thead>
+          <tr>
+              <th scope="col">#</th>
+              <th scope="col">PRODUCT</th>
+              <th scope="col">ADDRESS</th>
+              <th scope="col">ORDER ID</th>
+              <th scope="col">DATE</th>
+
+            <th scope="col">PRICE</th>
+            <th scope="col">PAYMENT</th>
+            <th scope="col">STATUS</th>
+
+          </tr>
+        </thead>
+        <tbody >
+            <% order.forEach((x,i)=>{ %>
+          <tr>
+            <th scope="row"><%- i+1 %></th>
+            <td>
+            <% x.product.forEach((y)=>{ %>
+           <div><%- y.productId.productname %></div> 
+            <% }) %>
+        </td>
+            <td><%- x.address %></td>
+            <td><%- x.orderId %></td>
+            <td><% const date =  x.date %> 
+                <%=moment(date).format("Do MMM YYYY");   %></td>
+
+            <td><%- x.cartTotalPrice %></td>
+            <td><%- x.paymentMethod %></td>
+        <% if(x.status == "delevered"){ %>
+            <td><span style="color: green;"><%- x.status %></span></td> 
+         <% }else if(x.status == "payment failed" || x.status == "return"){ %> 
+            <td style="color: red;"><%- x.status %></td>
+         <% }else if (x.status == "pending"){  %>
+          <td style="color: rgb(113, 28, 28);"><%- x.status %></td>
+        <% }else  if (x.status == "canceled"){ %>
+          <td style="color: rgb(255, 157, 0);"><%- x.status %></td>
+         <% } %>
+         <td><a href="/order-vew-detail/<%- x._id %>"><i class="fa-sharp fa-solid fa-eye"></i></a></td>
+          </tr>
+        <% }) %>
+        </tbody>
+      </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <%- include("../layouts/footer.ejs") %>

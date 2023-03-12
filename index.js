@@ -29,7 +29,7 @@ const path= require("path")
 
 const logger = require("morgan")
 
-app.use(logger('dev'));
+// app.use(logger('dev'));
 app.use(express.static(path.join(__dirname,"public")))
 
 app.set("view engine","ejs")

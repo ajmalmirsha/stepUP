@@ -107,12 +107,23 @@ app.get('/delete-banner-image/:id/:obj',logcheck,sub.delete_image)
 // COUPON MANAGMENT
 
 app.get('/coupons',logcheck,sub.show_coupons)
-app.post('/add-coupon',logcheck,sub.add_coupon)
+app.all('/add-coupon',logcheck,sub.add_coupon)
 app.get('/delete-coupon/:id',logcheck,sub.del_coupon)
 app.get('/edit-coupon/:id',logcheck,sub.edit_coupon_page)
 app.post('/edit-coupon/:id',logcheck,sub.do_edit_coupon)
 
 //    !---------------------------------------------------------!
+
+//ORDER MANAGMENT 
+
+app.get('/orders',logcheck,sub.list_orders)
+app.get('/order-view/:id',logcheck,sub.view_order)
+app.post('/change-status',logcheck,sub.change_status)
+
+//SALES REPORT
+
+app.get("/sales-report",logcheck,sub.sales_report)
+app.post("/sales-report",logcheck,sub.sales_reports)
 
 
 // <------------------------------------------------------------------------------------------------------------------>

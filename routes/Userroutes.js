@@ -138,14 +138,22 @@ app.get('/delete-from-cart/:id', cart.delete_item)
 
 // COUPON MANAGMENT
 
-app.get('/coupon-apply', cart.show_cart)
 
-app.post('/coupon-apply', cart.coupon_apply)
+// dont't want
+// app.get('/coupon-apply', cart.show_cart)
+
+// app.post('/coupon-apply', cart.coupon_apply)
+// -------
+
+app.post('/coupon-apply',user.apply_coupon)
+
+
+
 
 //    !---------------------------------------------------------!
 
 // BRANDS
-app.get('/brands/:brand', user.brands)
+app.get('/brands/:brandId', user.brands)
 
 //    !---------------------------------------------------------!
 
@@ -159,7 +167,32 @@ app.get('/delete-wishlist/:id', wishlist.delete_wishlist)
 
 //    !---------------------------------------------------------!
 
+// USER PROFILE
 
+app.get('/user-profile',user.user_profile)
+app.all('/edit-user-profile',user.do_edit_profile)
+
+// ADDRESS MANAGMENT
+
+app.all('/add-new-address',user.add_new_address)
+app.post('/edit-address/:id',user.edit_address)
+app.get('/delete-address/:id',user.delete_address)
+
+// CHECKOUT
+
+app.get('/checkout',user.show_checkout)
+app.post('/add-checkout-address',user.Add_address_checkout)
+app.post('/place-order',user.after_checkout)
+
+//ORDER MANAGEMENT
+app.get("/orderlist",user.orderlist)
+app.get('/ordersuccess',user.order_succcess)
+app.get("/order-vew-detail/:id",user.vew_order)
+app.get("/cancel-order/:id/:status",user.order_cancel)
+
+//ONLINE PAYMENT
+
+app.post("/verify-payment",user.online_payment)
 // <------------------------------------------------------------------------------------------------------------------>
 // <------------------------------------------------------------------------------------------------------------------>
 

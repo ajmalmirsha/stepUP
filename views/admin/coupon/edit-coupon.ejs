@@ -136,6 +136,14 @@
                           <div data-i18n="Documentation">Coupons</div>
                         </a>
                       </li>
+                      <li class="menu-item">
+                        <a
+                          href="/admin/orders"
+                          class="menu-link">
+                          <i class="menu-icon tf-icons bx bx-file"></i>
+                          <div data-i18n="Documentation">Orders</div>
+                        </a>
+                      </li>
                 </ul>
               </aside>
               <!-- / Menu -->
@@ -162,19 +170,24 @@
            
                 <div class="mb-3">
                   <label class="form-label" for="basic-default-fullname">coupon Name</label>
-                  <input type="text" value="<%- data.coupon_name %>" name="couponName" class="form-control" id="basic-default-fullname" />
+                  <input type="text" value="<%- data.coupon_name %>" name="couponName" class="form-control" id="basic-default-fullname" required/>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="basic-default-fullname">Price</label>
-                    <input type="number" value="<%- data.price %>" name="price" class="form-control" id="basic-default-fullname" />
+                    <label class="form-label" for="basic-default-fullname">Maximum discountPrice</label>
+                    <input type="number" value="<%- data.maxdiscountprice %>" name="maxprice" class="form-control" id="basic-default-fullname" required/>
                   </div>
                   <div class="mb-3">
-                    <label class="form-label" for="basic-default-fullname">DiscountPrice</label>
-                    <input type="number" value="<%- data.discountPrice %>" name="discountPrice" class="form-control" id="basic-default-fullname" />
+                    <label class="form-label" for="basic-default-fullname">discountpercentage</label>
+                    <input type="number" value="<%- data.discountpercentage %>" name="discountpercentage" class="form-control" id="basic-default-fullname" required/>
                   </div>
                   <div class="mb-3">
                     <label class="form-label" for="basic-default-fullname">Code</label>
-                    <input type="text" name="code" value="<%- data.code %>" class="form-control" id="basic-default-fullname" />
+                    <input type="text" name="code" value="<%- data.code %>" class="form-control" id="basic-default-fullname" required/>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label" for="basic-default-fullname">Valid date</label>
+
+                    <input type="date" name="dates"  value="<%- data.date.toISOString().slice(0,10) %>" >
                   </div>
                   <div class="mb-3"> 
                   </div>
@@ -184,6 +197,7 @@
                     id="basic-default-message"
                     class="form-control"
                    name="description"
+                   required
                   ><%- data.description %></textarea>
                 </div>
                 

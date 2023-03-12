@@ -4,6 +4,7 @@
 
 'use strict';
 
+
 (function () {
   let cardColor, headingColor, axisColor, shadeColor, borderColor;
 
@@ -420,6 +421,48 @@
 
   // Order Statistics Chart
   // --------------------------------------------------------------------
+
+const cata = document.getElementById("cata").value
+
+
+
+
+console.log(cata);
+console.log(typeof cata);
+
+const cc = JSON.parse(cata)
+
+console.log(cc[1]);
+ let hh 
+for(let i=0;i<cc.length ; i++){
+  hh = cc[i]
+}
+const gg = cc[1]
+const ff = gg[1]
+console.log("gg "+ff);
+console.log(hh);
+
+console.log(cc);
+
+const input = cc;
+
+const numbersOnly = input.map(innerArray => innerArray[1]);
+
+console.log(numbersOnly); // [8, 6, 5]
+
+ 
+
+
+const categoryCounts = input;
+
+const categoryNames = categoryCounts.map((categoryCount) => {
+  return categoryCount[0];
+});
+
+console.log(categoryNames); // ["CASUALS", "SPORTS", "FORMALS"]
+
+
+
   const chartOrderStatistics = document.querySelector('#orderStatisticsChart'),
     orderChartConfig = {
       chart: {
@@ -427,8 +470,8 @@
         width: 130,
         type: 'donut'
       },
-      labels: ['Electronic', 'Sports', 'Decor', 'Fashion'],
-      series: [85, 15, 50, 50],
+      labels: categoryNames,
+      series: numbersOnly,
       colors: [config.colors.primary, config.colors.secondary, config.colors.info, config.colors.success],
       stroke: {
         width: 5,
@@ -462,7 +505,7 @@
                 color: headingColor,
                 offsetY: -15,
                 formatter: function (val) {
-                  return parseInt(val) + '%';
+                
                 }
               },
               name: {
@@ -473,9 +516,9 @@
                 show: true,
                 fontSize: '0.8125rem',
                 color: axisColor,
-                label: 'Weekly',
+                label: '',
                 formatter: function (w) {
-                  return '38%';
+                
                 }
               }
             }
@@ -487,6 +530,37 @@
     const statisticsChart = new ApexCharts(chartOrderStatistics, orderChartConfig);
     statisticsChart.render();
   }
+  const dates = document.getElementById("date").value
+   const salesInput = document.getElementById('sales').value
+
+
+   console.log("sales: ");
+   console.log(typeof salesInput);
+
+   const sales = JSON.parse(salesInput);
+   const date = JSON.parse(dates);
+
+      console.log(date);
+ 
+   
+   console.log(sales);
+
+
+   // define an array of date strings
+let dateStrings = date;
+
+// define a function that converts a date string to a day of the week string
+function getDayOfWeek(dateStr) {
+  let dateObj = new Date(dateStr);
+  let dateString = dateObj.toDateString();
+  let dayOfWeek = dateString.slice(0, 3);
+  return dayOfWeek;
+}
+
+// use the map() method to apply the getDayOfWeek function to each element of the array
+let dayOfWeekStrings = dateStrings.map(getDayOfWeek);
+
+console.log(dayOfWeekStrings);
 
   // Income Chart - Area chart
   // --------------------------------------------------------------------
@@ -494,15 +568,15 @@
     incomeChartConfig = {
       series: [
         {
-          data: [24, 21, 30, 22, 42, 26, 35, 29]
+          data: sales
         }
       ],
       chart: {
-        height: 215,
+        height: 300,
         parentHeightOffset: 0,
         parentWidthOffset: 0,
         toolbar: {
-          show: false
+          show: true
         },
         type: 'area'
       },
@@ -558,12 +632,12 @@
         }
       },
       xaxis: {
-        categories: ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+        categories: dayOfWeekStrings,
         axisBorder: {
           show: false
         },
         axisTicks: {
-          show: false
+          show: true
         },
         labels: {
           show: true,
@@ -578,8 +652,8 @@
           show: false
         },
         min: 10,
-        max: 50,
-        tickAmount: 4
+        max: 500000,
+        tickAmount: 6
       }
     };
   if (typeof incomeChartEl !== undefined && incomeChartEl !== null) {

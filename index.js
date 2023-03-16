@@ -41,7 +41,7 @@ app.use('/',userroute)
 
 
 
-app.listen(4000,()=>{
+app.listen(3000,()=>{
     console.log("server started.....");
 })
 

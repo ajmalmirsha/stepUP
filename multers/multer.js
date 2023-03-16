@@ -39,6 +39,7 @@ const brands= multer({storage:brandsStorage})
 
 // MULTER FOR CATAGORY
 const catgoryStorage = multer.diskStorage({
+ 
     destination:function(req,file,cb){
    cb(null,path.join(__dirname,"../public/catagory-img"))
     },
@@ -46,6 +47,7 @@ const catgoryStorage = multer.diskStorage({
      const name = Date.now()+"-"+file.originalname
      cb(null,name)
     }
+    
 })
 
 const cata= multer({storage:catgoryStorage})

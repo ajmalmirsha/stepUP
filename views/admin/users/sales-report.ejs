@@ -157,12 +157,13 @@
    
 <div class="no-print m-5">
     <form action="" method="post">
-       <input type="date" name="from">
-       <input type="date" name="to">  
+       <input type="date" name="from" required>
+       <input type="date" name="to" required>  
        <button type="submit" class="btn btn-secondary">submit</button>
     </form>
+    <% if(typeof print !== "undefined"){ %>
   <button   class="no-print btn btn-primary pr-5" onclick="printReport()" style="float: right;">Print</button>
-   
+   <% } %>
 </div>
 
 <%  if (typeof data !== "undefined") { %>

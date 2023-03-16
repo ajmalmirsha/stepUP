@@ -159,7 +159,7 @@
 
          
     <!-- product table -->
-  <a href="/admin/add-catagory" class="btn btn-primary w-25 my-3 ms-3">Add Catagory</a>
+  <a href="/admin/add-catagory" class="btn btn-primary btn-container w-25 my-3 ms-3">Add Catagory</a>
       <table class="table table-bordered my-3" id="tables">
         <thead>
           <tr>
@@ -184,7 +184,7 @@
             <td scope="row"><img src="/catagory-img/<%- data.image %>" alt="" style="width: 100px;"></td>
             <td> 
               <a href="/admin/edit-category/<%- data._id %>" class="btn btn-primary" >EDIT</a>
-              <a href="/admin/delete-category/<%- data._id %>" class="btn btn-danger" onclick="conf()">DELETE</a>
+              <a hidden class="btn btn-danger text-white" onclick="conf('<%- data._id %>')">DELETE</a>
               <a href="/admin/unlist-category/<%- data._id %>" class="btn btn-warning">UNLIST</a>
             </td>
           </tr>
@@ -195,8 +195,24 @@
         
       </table>
 <script>
-  function conf(){
-    alert('are you sure to delete this category !!')
+  function conf(id){
+    Swal.fire({
+          title: 'Are you sure?',
+          text: "You wan't to delete this catagory!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'yes,delete!'
+      }).then((result)=>{
+        if(result.isConfirmed){
+   $.ajax({
+    url:"/admin/delete-category/"+id,
+    success: (response)=>{
+   location.reload()
+    }
+   })
+  }})
   }
 </script>
 

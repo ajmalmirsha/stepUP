@@ -6,7 +6,7 @@
         <!-- Menu -->
                 <!-- Menu -->
 
-                <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+                <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme me-3">
                   <div class="app-brand demo">
                     <a href="index.html" class="app-brand-link">
                       <span class="app-brand-logo demo">
@@ -162,8 +162,13 @@
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
          
     <!-- product table -->
+    
+          <!-- Content wrapper -->
+          <div class="content-wrapper">
+            <!-- Content -->
+          
 
-      <table class="table table-bordered my-3" id="tables">
+      <table class="col-lg-12 table table-bordered   my-3" id="tables">
         <thead>
           <tr>
             <th scope="col">#</th>
@@ -222,7 +227,7 @@
                   <li><a href="/admin/unlist-product/<%- data._id %>"  class="btn btn-warning d-block my-1">list/unlist</a></li>
                   <li> <a href="/admin/view-product/<%- data._id %>" class="btn btn-secondary d-block my-1">View</a></li>
                   <li> <a href="/admin/edit-product/<%- data._id %>" class="btn btn-primary d-block my-1" >EDIT</a></li>
-                  <li> <a  onclick="conf('<%- data._id %>')" class="btn btn-danger d-block my-1">DELETE</a></li>
+                  <li hidden> <a  onclick="conf('<%- data._id %>')" class="btn btn-danger d-block my-1 text-white">DELETE</a></li>
                 </ul>
               </div>
 
@@ -240,6 +245,8 @@
 
 
       </table>
+
+      </div>
 
       <script>
         function conf(id){
@@ -278,14 +285,6 @@
        
       </script>
 
-      <script>
-        $(document).ready(function() {
-            $('#tables').DataTable();
-        });
-        </script>
-        
-
  
-  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
     
       <%- include("../layouts/footer.ejs") %>

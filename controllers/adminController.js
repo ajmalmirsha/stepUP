@@ -22,16 +22,16 @@ const orderModel = require('../models/orderModel')
 
 
 module.exports = {
-    adminlogout :async (req,res)=>{
+    adminlogout :async (req,res,next)=>{
         try{
   req.session.admin=null
         res.redirect('/admin')
         }catch(error){
-            console.log(error.message);
+          next()
         }
       
    },
-   adminlog : async (req,res)=>{
+   adminlog : async (req,res,next)=>{
     try{
     if(req.session.admin){
        res.redirect('')
@@ -39,11 +39,11 @@ module.exports = {
         res.render('adminlogin')
     }
     }catch(error){
-        console.log(error.message);
+      next()
     }
 
 },
- Adminlogin : async (req, res) => {
+ Adminlogin : async (req, res,next) => {
     try{
     if(req.session.admin){
      
@@ -58,12 +58,12 @@ module.exports = {
       res.render("adminlogin")    
     }
     }catch(error){
-        console.log(error.message);
+      next()
     }
 
   
 },
-adddata: async (req,res)=>{
+adddata: async (req,res,next)=>{
     try{
         if(
             req.body.catagory==""||
@@ -74,7 +74,8 @@ adddata: async (req,res)=>{
         ){
             const data = await catagory.find()
             const brands = await brand.find()
-            res.render('products/addproduct',{data,brands,err:"allfeilds are required"})
+            res.render('products/addproduct',{data,brands,err:"all feilds are required"})
+            
         }
    const images = []
 
@@ -84,7 +85,7 @@ adddata: async (req,res)=>{
     if(images.length == 0){
         const data = await catagory.find()
         const brands = await brand.find()
-        res.render('products/addproduct',{data,brands,err:"allfeilds are required"})
+        res.render('products/addproduct',{data,brands,err:"product image required "})
        
     }
 
@@ -97,40 +98,43 @@ adddata: async (req,res)=>{
         brand:req.body.brand
     })
    const result = await Data.save()
-   if(result){
+
     res.redirect('/admin/products')
-   }else{
-    console.log("not saved");
-   }
+  
     }catch(error){
-        console.log(error.message);
+      next()
     }  
  
 }
 ,
- admincheck : async (req, res) => {
+ admincheck : async (req, res,next) => {
     try{
     const email = req.body.email
     const password = req.body.password
-    console.log(email);
-    console.log(password);
+    if(email == ""||
+    password == ""
+    ){
+        res.render('adminlogin',{message:"All feilds are required"})
+
+    }else{
 
     const Data = await admin.findOne({ email: email,password:password})
     if(Data){
          req.session.admin=true
        res.redirect("/admin/adminhome")
     }else{
-        console.log('login faild');
         req.session.log=true
         res.render('adminlogin',{message:"invalid email or password"})
+    }  
     }
+    
     }catch(error){
-        console.log(error.message);
+      next()
     }
 
 
 },
-adminhome : async (req,res)=>{
+adminhome : async (req,res,next)=>{
     try{
         const ord=await orderModel.find().populate({
             path: 'product.productId',
@@ -153,13 +157,11 @@ adminhome : async (req,res)=>{
           });
           const catacount = Object.entries(catagoryCount).sort((a, b) => b[1] - a[1]);
           
-          console.log(catacount);
  
 
 const numbersOnly = catacount.map(innerArray => innerArray[1]);
 
           
-console.log("numbers"+numbersOnly);
 
 
 
@@ -168,7 +170,6 @@ const categoryNames = catacount.map((categoryCount) => {
   return categoryCount[0];
 });
 
-console.log(categoryNames);
 
 const ordercount = await orderModel.find({status:"delevered"}).count()
 
@@ -182,8 +183,13 @@ const ordercount = await orderModel.find({status:"delevered"}).count()
         const salesChart = await orderModel.aggregate([
           
             {
+                $match: { status: "delevered" } // Add $match stage to filter by status
+              },
+              {
+                
               $group: {
                 _id: { $dateToString: { format: '%Y-%m-%d', date: '$date' } },
+
                 sales: { $sum: '$cartTotalPrice' },
               },
             },
@@ -223,62 +229,12 @@ const ordercount = await orderModel.find({status:"delevered"}).count()
             }
         }
     ]);
-    
-    const upiPayments = await orderModel.aggregate([
-       {$group:{ _id: {paymentMethod:"UPI"}}}
-    ])
 
-    //   console.log("sales :"+ sales);
-    console.log("cataaas :" + cata);
 
-      console.log("cataaas :" + cata.cata);
-
-   
-      // catagory wise sales
-
-      
-     const pipeline =[
-        // match orders with the desired status
-        { $match: { status: "delevered" } },
-        
-        // unwind the product array to create a document for each product
-        { $unwind: "$product" },
-        
-        // lookup the product's category
-        {
-          $lookup: {
-            from: "categories",
-            localField: "product.productId",
-            foreignField: "products",
-            as: "category"
-          }
-        },
-        
-        // unwind the category array
-        { $unwind: "$category" },
-        
-        // group by category and sum the productTotalPrice for each category
-        {
-          $group: {
-            _id: "$category._id",
-            cartTotalPrice: { $sum: "$product.productTotalPrice" }
-          }
-        }
-      ];
-      
-
-console.log("cata :");
- await orderModel.aggregate(pipeline)
-  .then(result => {
-    console.log(result);
-    console.log(result.category);
-    // do something with the result...
-  })
-console.log(pipeline);
 //total saless
 
   const totalSales = await orderModel.find({status:"delevered"})
-// console.log(totalSales);
+
 let sum = 0
 for(var i=0;i<totalSales.length ; i++){
     sum =sum+totalSales[i].cartTotalPrice
@@ -295,28 +251,17 @@ for(var i=0;i<yesterdaySalesof.length ; i++){
     yesterdaySalesSum =yesterdaySalesSum + yesterdaySalesof[i].cartTotalPrice
 }
 
-console.log(today);
-
-
 const todaySalesof = await orderModel.find({status:"delevered",date:today})
 let todaySalesSum = 0
 for(var i=0;i<todaySalesof.length ; i++){
     todaySalesSum =todaySalesSum+todaySalesof[i].cartTotalPrice
 }
-console.log("yesterday sale :"+ yesterdaySalesSum);
-console.log("today sale :"+ todaySalesof);
-
-
-
-// console.log("totalSales :"+sum);
-// console.log(UPI[0].sum);
-
 
 // payment metthod wise pie chart
 
 const UPI = await orderModel.find({status:"delevered",paymentMethod:"UPI"}).count()
 const COD = await orderModel.find({status:"delevered",paymentMethod:"COD"}).count()
-console.log(UPI,COD);
+const WALLET = await orderModel.find({status:"delevered",paymentMethod:"WALLET"}).count()
 
         res.render('adminhome',{
             date,
@@ -324,6 +269,7 @@ console.log(UPI,COD);
             sum,
             UPI,
             COD,
+            WALLET,
             catacount,
             numbersOnly,
             categoryNames,
@@ -332,11 +278,11 @@ console.log(UPI,COD);
  
     
     }catch(error){
-        console.log(error.message);
+      next()
     }
 
 },
-addproduct: async (req,res)=>{
+addproduct: async (req,res,next)=>{
     try{
     const data = await catagory.find()
     const brands = await brand.find()
@@ -346,31 +292,31 @@ addproduct: async (req,res)=>{
         res.redirect('/admin')
     }
     }catch(error){
-        console.log(error.message);
+      next()
     }
 
 },
-show_product: async (req,res)=>{
+show_product: async (req,res,next)=>{
     try{
     const cata= await product.find({})
-    const data= await product.find({}).populate('catagory').populate('brand').exec()
-    console.log("populate cata.catagory :",cata);
+    let data= await product.find({}).populate('catagory').populate('brand').exec()
+    data = data.reverse()
     res.render("products/products",{data,cata,moment:moment})
     }catch(error){
-        console.log(error.message);
+      next()
     }
 
 },
-getall_users: async (req,res)=>{
+getall_users: async (req,res,next)=>{
     try{
     const allusers= await user.find()
     res.render('users/userlist',{allusers})
     }catch(error){
-        console.log(error.message);
+      next()
     }
 
 },
-delete_product: async(req,res)=>{
+delete_product: async(req,res,next)=>{
     try{
   const imgId =req.params.id
    fs.unlink(path.join(__dirname,'../public/products',imgId),()=>{})
@@ -378,59 +324,80 @@ delete_product: async(req,res)=>{
         res.redirect('/admin/products')
     })
     }catch(error){
-        console.log(error.message);
+        res.render("admin_error")
+
+
     }
  
 },
-edit_product: async (req,res)=>{
+edit_product: async (req,res,next)=>{
     try{
    const data = await  product.findOne({_id:req.params.id}).populate('catagory').populate('brand').exec()
    const cata = await  catagory.find()
    const brands = await brand.find()
    res.render("products/edit-product",{data,cata,brands})
     }catch(error){
-        console.log(error.message);
+        res.render("admin_error")
+
+
     }
 
 },
-do_edit_product: async (req,res)=>{
+do_edit_product: async (req,res,next)=>{
 
     try{
-    product.updateOne({_id:req.params.id},{$set:{
-        productname:req.body.productname,
-        catagory:req.body.catagory,
-        price:req.body.price,
-        description:req.body.description,
-        quantity:req.body.Quantity,
-        brand:req.body.brand
-    }}).then(()=>{
-        res.redirect('/admin/products')
-    })
+        if(
+        req.body.catagory==""||
+        req.body.price==''||
+        req.body.description==''||
+        req.body.Quantity==''||
+        req.body.brand==''
+        ){
+            const data = await  product.findOne({_id:req.params.id}).populate('catagory').populate('brand').exec()
+            const cata = await  catagory.find()
+            const brands = await brand.find()
+            res.render("products/edit-product",{data,cata,brands,err:"all fields are required"}) 
+        }else{
+            
+            product.updateOne({_id:req.params.id},{$set:{
+                productname:req.body.productname,
+                catagory:req.body.catagory,
+                price:req.body.price,
+                description:req.body.description,
+                quantity:req.body.Quantity,
+                brand:req.body.brand
+            }}).then(()=>{
+                res.redirect('/admin/products')
+            })
+        }
     }catch(error){
-        console.log(error.message);
+        res.render("admin_error")
+
+
     }
  
 },
-show_catagory: async (req,res)=>{
+show_catagory: async (req,res,next)=>{
     try{
-   const data = await catagory.find()
+   let data = await catagory.find()
+   data = data.reverse()
   res.render("products/catagory-list",{data})
     }catch(error){
-        console.log(error.message);
+      next()
     }
  
 },
-add_catagory_page: async (req,res)=>{
+add_catagory_page: async (req,res,next)=>{
     try{
   res.render('products/add-catagory')
     }catch(error){
-        console.log(error.message);
+      next()
     }
   
 },
- add_catagory: async (req,res)=>{
+ add_catagory: async (req,res,next)=>{
     try{
-        if(req.body.description == '' || req.body.catagoryname == ''){
+        if(req.body.description == '' || req.body.catagoryname == '' || req.file?.filename == undefined){
             res.render('products/add-catagory',{err:"All Fileds are required"})
         }else{
    const cat = req.body.catagoryname
@@ -448,92 +415,120 @@ add_catagory_page: async (req,res)=>{
         })
           const result = await Data.save()
           if(result){
-             console.log("catagory saved successfully");
             res.redirect('/admin/catagory')
           }     
     } 
 }  
     }catch(error){
-        console.log(error.message);
+      next()
     }
   
 },
-delete_catagory: async (req,res)=>{
+delete_catagory: async (req,res,next)=>{
     try{
    catagory.deleteOne({_id:req.params.id}).then(()=>{
         res.redirect('/admin/catagory')
     })
     }catch(error){
-        console.log(error.message);
+        res.render("admin_error")
+
+
     }
 },
-edit_category: async (req,res)=>{
+edit_category: async (req,res,next)=>{
     try{
     const cname=req.body.catagoryname
     const cap = cname.toUpperCase()
     const datas= await catagory.findOne({_id:req.params.id})
     let exist = await catagory.findOne({catagory_name:cap})
-    
-     await  catagory.updateOne({_id:req.params.id},{$set:{
+    if(req.file?.filename !== undefined){
+      await  catagory.updateOne({_id:req.params.id},{$set:{
         catagory_name:cap,
         description:req.body.description,
         image:req.file.filename
-    }}) 
+    }})  
+    }else{
+        await  catagory.updateOne({_id:req.params.id},{$set:{
+            catagory_name:cap,
+            description:req.body.description
+        }}) 
+    }
+      
         res.redirect("/admin/catagory")
 
     }catch(error){
-        console.log(error.code);
         if(error.code == 11000){
 
             const data= await catagory.findOne({_id:req.params.id})
-         console.log("chacherrrrrrdddwdwdd");
+         
            res.render('products/edit-catagory',{data,message:"this catagory already exist"})
         }else{
-            console.log(error.message);
+            res.render("admin_error")
+
+
         }
     }
 
 },
-edit_category_page: async (req,res)=>{
+edit_category_page: async (req,res,next)=>{
     try{
   const data= await catagory.findOne({_id:req.params.id})
     res.render('products/edit-catagory',{data})
     }catch(error){
-        console.log(error.message);
+        res.render("admin_error")
+
+
     }
       
 },
-view_product_page: async (req,res)=>{
+view_product_page: async (req,res,next)=>{
     try{
   const data = await product.findOne({_id:req.params.id}).populate('catagory').exec()
   
      
      res.render('products/view-product',{data,moment:moment})
     }catch(error){
-        console.log(error.message);
+        res.render("admin_error")
+
     }
    
 },
-brands: async (req,res)=>{
+brands: async (req,res,next)=>{
     try{
- const data= await brand.find()
+ let data= await brand.find()
+ data = data.reverse()
     res.render('brands/brands_list',{data})
     }catch(error){
-        console.log(error.message);
+      next()
     }
    
 },
-add_brand: async (req,res)=>{
+add_brand: async (req,res,next)=>{
     try{
    res.render('brands/add_brand')
     }catch(error){
-        console.log(error.message);
+      next()
     }
  
 },
-save_brand: async (req,res)=>{
+save_brand: async (req,res,next)=>{
     try{
-    let exist = await brand.findOne({name:req.body.name})
+        let name = req.body.name
+        let description = req.body.description
+     
+         name = name.trim()
+         description = description.trim()
+
+
+        if(
+            name=="" ||
+            description=="" ||
+            req.file?.filename == undefined
+        ){
+            res.render("brands/add_brand",{err:"all feilds are required !!"})
+
+        }else{
+           let exist = await brand.findOne({name:req.body.name})
     if(exist){
         exist = null
         res.render("brands/add_brand",{err:"this brand alredy exist"})
@@ -551,54 +546,94 @@ save_brand: async (req,res)=>{
     }else{
         res.render("brands/add_brand",{err:"there is an error"})
     }
-}
+}  
+        }
+   
     }catch(error){
-        console.log(error.message);
+      next()
     }
 
     },
     
-    edit_brand: async (req,res)=>{
+    edit_brand: async (req,res,next)=>{
         try{
         const data = await brand.findOne({_id:req.params.id})
         res.render("brands/edit_brand",{data})
         }catch(error){
-            console.log(error.message);
+            res.render("admin_error")
+
         }
         
     },
-    do_edit_brand: async (req,res)=>{
+    do_edit_brand: async (req,res,next)=>{
         try{
-        brand.updateOne({_id:req.params.id},
+            let name= req.body.name
+            let description = req.body.description
+            name = name.trim()
+            description = description.trim()
+
+            if(
+
+                name=="" ||
+                description=="" 
+
+            ){
+const data = await brand.findOne({_id:req.params.id})
+
+                res.render("brands/edit_brand",{data,err:"all feilds are required !!"})
+   
+            }else{
+         if(req.file?.filename == undefined){
+            
+            brand.updateOne({_id:req.params.id},
             {name:req.body.name,
-            description:req.body.description,
-            image:req.file.filename
+            description:req.body.description
             }
+
             ).then(()=>{
+
                 res.redirect('/admin/brands')
+
             })
+         }else{
+            brand.updateOne({_id:req.params.id},
+                {name:req.body.name,
+                description:req.body.description,
+                image:req.file.filename
+                }
+    
+                ).then(()=>{
+    
+                    res.redirect('/admin/brands')
+    
+                })
+         }
+
+            }
+      
         }catch(error){
-            console.log(error.message);
+            res.render("admin_error")
+
         }
 
     },
-    delete_brand: async (req,res)=>{
+    delete_brand: async (req,res,next)=>{
         try{
        brand.remove({_id:req.params.id}).then(()=>{
-            res.redirect('/admin/brands')
+            res.json({sucess:true})
         })
         }catch(error){
-            console.log(error.message);
+            res.render("admin_error")
+
         }
  
     },
-     do_edit_image: async (req,res)=>{
+     do_edit_image: async (req,res,next)=>{
         try{
       const id = req.params.id
 const data = await product.findOne({_id:id})
 
 if(data.image.length <= 4){
-      console.log("reached");
          const images = []
     for(file of req.files){
         images.push(file.filename)
@@ -606,7 +641,6 @@ if(data.image.length <= 4){
     if(data.image.length + images.length <= 4 ){
  const a= await product.updateOne({_id:req.params.id},{$addToSet:{image:{$each:images}}})
         if(a){
-               console.log("image updated");
                const a = req.params.id
 
             res.redirect('/admin/edit-product/'+ a)
@@ -614,17 +648,13 @@ if(data.image.length <= 4){
             res.redirect('/admin/products')
         }
     }else{
-        try{
-            const data = await  product.findOne({_id:req.params.id})
+       
+            const data = await  product.findOne({_id:req.params.id}).populate('catagory').populate('brand').exec()
             const cata = await  catagory.find()
             const brands = await brand.find()
-            let imgfull = true
-            res.render("products/edit-product",{data,cata,brands,imgfull})
-                imgfull = false
-             }catch(error){
-                 console.log(error.message);
-             }
-
+            let err = "only 4 images you can add !!"
+            res.render("products/edit-product",{data,cata,brands,err})
+          
 }
 }else{
      res.redirect('/admin/products')
@@ -633,11 +663,12 @@ if(data.image.length <= 4){
 
 
         }catch(error){
-            console.log(error.message);
+            res.render("admin_error")
+
         }
 
     },
-    block_user: async (req,res)=>{
+    block_user: async (req,res,next)=>{
         try {
         const id = req.params.id
        const status = await user.findOne({_id:id},{block:1,_id:0})
@@ -652,15 +683,16 @@ if(data.image.length <= 4){
        }
      
         } catch (error) {
-          console.log(error.message);
+            res.render("admin_error")
+
+
         }   
     },
-    unlist : async (req,res)=>{
+    unlist : async (req,res,next)=>{
         try {
             const id = req.params.id
         const list = await product.findOne({_id:id},{unlisted:1,_id:0})
         if(list.unlisted == false){
-        console.log("list is : "+list);
         product.updateOne({_id:id},{$set:{unlisted:true}}).then(()=>{
             res.redirect('/admin/products')
         })
@@ -670,10 +702,11 @@ if(data.image.length <= 4){
     })
     } 
         } catch (error) {
-          console.log(error.message);
+            res.render("admin_error")
+
         }
 },
-delete_image: async (req,res)=>{
+delete_image: async (req,res,next)=>{
     try {
      const imgId = req.params.imgid
     const proid = req.params.proid
@@ -683,17 +716,18 @@ delete_image: async (req,res)=>{
 
     res.redirect('/admin/edit-product/'+proid)     
     } catch (error) {
-      console.log(error.message);
+        res.render("admin_error")
+
     }
 },
-adminlogs: async (req,res)=>{
+adminlogs: async (req,res,next)=>{
     try {
       res.render('adminlogin')   
     } catch (error) {
-      console.log(error.message);
+    next()
     } 
 },
-unlist_catagory: async (req,res)=>{
+unlist_catagory: async (req,res,next)=>{
     try {
         const cata = await catagory.findOne({_id:req.params.id})
         if(cata.unlisted == true){
@@ -703,7 +737,9 @@ unlist_catagory: async (req,res)=>{
         }
         res.redirect('/admin/catagory')
     } catch (error) {
-        console.log(error.message);
+        res.render("admin_error")
+
+
     }
 }
 }

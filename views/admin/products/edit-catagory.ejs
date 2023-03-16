@@ -191,7 +191,7 @@
                     <a href="/admin/delete-cata-img/<%- data._id %>/<%- data.image %>" class="btn btn-danger">delete</a>
                   </div>
                   <label class="form-label" for="basic-default-fullname">Image</label>
-                  <input type="file" onchange="show(this)" value="<%- data.image %>" name="image" class="form-control" accept="image/*" required/>
+                  <input type="file" onchange="show(this)" value="<%- data.image %>" name="image" class="form-control" accept="image/*" />
                 </div>
                <% if(typeof message !== 'undefined'){ %>
                 <div><p style="color: red;"><%- message %></p></div> 

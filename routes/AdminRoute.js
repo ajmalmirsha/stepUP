@@ -69,7 +69,7 @@ app.get('/block-user/:id',logcheck,ac.block_user)
 app.get('/catagory',logcheck,ac.show_catagory)
 app.get('/add-catagory',logcheck,ac.add_catagory_page)
 app.post('/add-catagory',logcheck,cata.single('image'),ac.add_catagory)
-app.get('/delete-cata-img/:proid/:imgid',logcheck,sub.edit_cata_img)
+app.get('/delete-cata-img/:proid/:imgid',logcheck,sub.delete_cata_img)
 
 app.get("/delete-category/:id",logcheck,ac.delete_catagory)
 app.get("/edit-category/:id",logcheck,ac.edit_category_page)
@@ -107,7 +107,8 @@ app.get('/delete-banner-image/:id/:obj',logcheck,sub.delete_image)
 // COUPON MANAGMENT
 
 app.get('/coupons',logcheck,sub.show_coupons)
-app.all('/add-coupon',logcheck,sub.add_coupon)
+app.post('/add-coupon',logcheck,sub.add_coupon)
+app.get('/add-coupon',logcheck,sub.show_coupons)
 app.get('/delete-coupon/:id',logcheck,sub.del_coupon)
 app.get('/edit-coupon/:id',logcheck,sub.edit_coupon_page)
 app.post('/edit-coupon/:id',logcheck,sub.do_edit_coupon)

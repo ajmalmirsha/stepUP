@@ -1,5 +1,7 @@
 <%- include("../layouts/header.ejs") %>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+    crossorigin="anonymous"></script>
 
     <div id="preloader">
       <div class="jumper">
@@ -42,13 +44,18 @@
               <div class="col-lg-4">
                 <div style="margin-top: 20px;">
                   <h1 class="pt-2"><%- element.productname %></h1>
-                  <h5 class="pt-2"><%- element.description %></h5>
+                  <h5 class="pt-2 text-muted"><%- element.description %></h5>
                   <h5 class="pt-2">price :₹ <%- element.price %></h5>
                   <h5 class="pt-2">catagory : <%- element.catagory.catagory_name %></h5>
+                  <% if( element.quantity <= 0){ %>
+                    <h5 class="pt-2 text-danger">OUT OF STOCK</h5>
+
+                  <% }else{ %>
                   <h5 class="pt-2"><%- element.quantity %> more left</h5>
-                  <h5 class="pt-2">Brand : <%- element.brand %></h5>
+                  <% } %>
+                  <h5 class="pt-2">Brand : <%- element.brand.name %></h5>
                   <!-- <a href="" class="btn btn-primary pt-2">Buy now</a> -->
-                  <a href="/add-to-cart/<%- element._id %>" class="btn btn-warning pt-2">Add to Cart</a>
+                  <a onclick="addCart('<%- element._id %>')" class="btn btn-warning pt-2">Add to Cart</a>
                 </div>
               </div>
             </div>
@@ -56,7 +63,36 @@
           <% }) %>
       </section>
 
-
+      <script>
+        function addCart(id){
+         $.ajax({
+              url : "/add-to-cart/"+id ,
+            success: (response)=>{
+             if(response.success){
+ 
+                  Swal.fire({
+           title: 'Added to Cart!',
+           text: 'Your product Added to cart',
+           icon: 'success',
+           showConfirmButton: false
+          
+ 
+          })
+ 
+             }else{
+                 Swal.fire({
+           title: 'item already exist in cart !',
+           text: 'Your product not Added to cart',
+           icon: 'warning',
+           showConfirmButton: false
+          })
+             }
+            }
+         })
+      
+         }
+     </script>
+ 
 
       <script type="text/javascript">
         $(document).ready(function () {

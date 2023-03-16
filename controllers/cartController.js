@@ -19,14 +19,13 @@ const coupon = require('../models/couponModel')
 
 
 module.exports ={
-    do_add_cart: async (req,res)=>{
+    do_add_cart: async (req,res,next)=>{
       try {
         let exist = await user.findOne({email:req.session.email,'cart.productId':req.params.id})
 
         if(exist){
 
           exist = null
-          console.log("item already exist in cart !!");
           res.json({failed : true})
         }else{
 
@@ -37,58 +36,31 @@ module.exports ={
          
         await user.updateOne({email:req.session.email},{$set:{cartTotalPrice:totalprice}})
         
-        if(result){
           res.json({success : true})
-         console.log('added item to cart');
-        }else{
-        console.log('added not item to cart');
-        }
+       
         }
       } catch (error) {
-        console.log(error.message);
+        res.render("user_error")
+
       }
     },  
-    show_cart: async (req,res)=>{
+    show_cart: async (req,res,next)=>{
       try {
 
-        console.log("showing cart...");
         const data = user.findOne({email:req.session.email})
         const cartData=await user.findOne({email:req.session.email}).populate('cart.productId').exec()
         res.render('cart/cart',{cartData,users:true})
 
       } catch (error) {
-        console.log(error.message);
+      next()
       }
        
     },
     changeqty: async (req,res,next)=>{
       try {
-        
-        console.log("change qty function reached !!!");
-
         const count = req.body.count
         const prodId = req.body.product
-        // const counter =  count - (count *2)
-        // console.log(counter);
-
         const ss = await product.findById(prodId)
-      
-
-        // const ObjectId = require('mongodb').ObjectId;
-
-      //   const counter = await user.findOne({ 
-      //   email: req.session.email,
-      //   "cart.productId": prodId
-      // }).populate("cart.productId")
-  
-      //  console.log("ss.quantity :"+ss.quantity);
-      
-      //  console.log("counter.qty :"+counter.cart[0].qty);
-      //  if(ss.quantity > counter.cart[0].qty){
-
-
-      //      console.log(counter);
-       
 
         const inc = await user.updateOne({ email: req.session.email, "cart.productId": prodId }, {$inc: { 'cart.$.qty': count } })
 
@@ -110,16 +82,10 @@ module.exports ={
         const totalAmount = await user.updateOne({ email: req.session.email }, {$set: { cartTotalPrice: cartTotal }})
       
         res.json({ success: true,productprice,cartTotal})
-
-        if(inc){
-        console.log("done inc");
-        }else{
-        console.log("failedddddd");
-        }
     
       
       } catch (error) {
-        console.log(error.message);
+      next()
       }
     },
 
@@ -140,31 +106,14 @@ module.exports ={
       
        const cartData=await user.findOne({email:req.session.email}).populate('cart.productId').exec()
 
-       console.log("deleted from cart....");
        res.json({success:true})
-      //  res.redirect('/show-cart')
 
       } catch (error) {
-        console.log(error.message);
+        res.render("user_error")
+
       }   
     },
     //  !---------------------------------------------------------!
 
-    coupon_apply: async (req,res)=>{
-      try {
-       const coupons = await coupon.findOne({code:req.body.coupon})
-       const cartData=await user.findOne({email:req.session.email}).populate('cart.productId').exec()
-
-       if(coupons){
-       const carttotal = cartData.cartTotalPrice - coupons.discountPrice
-      
-       res.render('cart/cart',{cartData,coupons})
-       console.log("coupon applied...");
-       }
-      } catch (error) {
-       console.log(error.message);
-      }
-    }
-    //  !---------------------------------------------------------!
 
 }

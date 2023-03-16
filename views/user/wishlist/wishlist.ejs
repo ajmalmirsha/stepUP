@@ -13,9 +13,9 @@
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
             <h1 class="font-weight-semi-bold text-uppercase mb-3">Whish list</h1>
             <div class="d-inline-flex">
-                <p class="m-0"><a href="">Home</a></p>
+                <p class="m-0"><a href="/">Home</a></p>
                 <p class="m-0 px-2">-</p>
-                <p class="m-0">Shopping Cart</p>
+                <p class="m-0">Whish list</p>
             </div>
         </div>
     </div>
@@ -23,11 +23,72 @@
 
 
     <!-- Cart Start -->
-    <div class="container-fluid pt-5">
+    <div class="container-fluid pt-5 ">
         <div class="row px-xl-5">
             <div class="col-lg-12 table-responsive mb-5">
 
-
+                 <% if( data.wishlist == 0){ %>
+                  <div class="d-block justify-content-center text-center">
+                 <img class="justify-content-center w-25"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAO4AAADUCAMAAACs0e/bAAABiVBMVEX////tL1kAAAA+QJXm6fJjaqkpLI73+Ptha6vg
+                 4OwOCwsKBQX39/ft7e0vMY8YFRWurq7V1NTtJVMcGhpXZan++fpzc3PJyMimpaWPjo45O5PR0NCDg4M0MzPwL1fx8fFpaGghHx81N5FPTk4qKCicm5vg39+8u7vZ
+                 3Ovw8PbHx96Iibq9vtnziJryeY8rLo53eLHsD0mRkr9ISptZW6ObnMXT0+Wtrs9FR5pSVJ/2orL3rLv97fBXVlZhYGBUU1N0fbSAksGxttSnp8vsQGfsAEHwU3SY
+                 mcPIQHP4usaCJTj71NzxaoX5xc/85utBQEBph7qzQXqrjbfqwM+er9GLeqy/bZXeHlawwdqpLHFFXKYgI43RrcehlcHZPGuedqfleZK6jbDhla9qQo4/ba5GfrYt
+                 X6ZmiryiXJGAIXfktMa0XY7gWXzKh6joqb7ZzuDMKGSZHnDbh6COQ4ULEIa3osS8fKWAXpu9L2xTOo2eN3ieJ0EAFRFLHyizKUdQICp5O4XAUYNdTZhj2WudAAAT
+                 qElEQVR4nO1d/0PiSJYPMRBDJBHQRhBUQDHfVAIkiN86Blva9Qu9o7fudPf29vTs7e71zHTPzd7szM3M7t7cX35VFQKB8CXB0EaPzw8SKpWiPnmv3nv1qhIxbIop
+                 pphiiimmmGKKKaaYYooJgaqLx8cSf9/d+DQgjo8FjuAkrT7O1aTX3ZkwqBdc60h64b7vxaDqbXcmDHK2o8Sc5vpyDSuRGC88mIGgEZYvuu7u4r3LIi/xpaIk+lrG
+                 XLWkQ5qESonWcl5z1cxBLBb47WeaAMZB1cPeeY0bTSUkTcUUTYR9tUDRiopzxdyTYyvywfU+pWs+1mb9Bn3czAq9Z0hBW9itOXZJ//a7U3kb25Zvn5972T9vQQSNT
+                 9LGVn1RpwiekjTJWUNlfvH8+ioQW4nFDjztopeoDyLz+2NTrHrJUUNF+Pfq7OtA7MKLjk0GGte/nCt2jiVldDtkxTTH159f3rlXE4NI9C9fsH45Hu1Z1Ip5JCwMq3
+                 ef4OvHZStdVRGrMJaiKL3Ll/CzI5uqhoKt0R90NtYnBGlwLEi+0Amr3dWOKV7XVO7lsaJ1XUXOlmv6iJiSlIKvSmBkULV7c0NAclVhcGzUEzbdGOJRXvTtr4MYmmi
+                 Ua1JJHFVtQiAVXaR04fX+4oAK1S7no44wwIIDA00KRWaA7bOBEo6PdaeVHYAH/fvDZ29W5KsBFVTN+q00wGi1MetISx2qMqdpiqDqokOv7gTqH99eYIHY7ReDKuia
+                 2EFwVHN1DyP/35sTTV7RvGpzS449u3p3LVQGjjpCNcBx1Gj/oXineTfHnS5RXjmu9/Kbdx/B54ItQLSB1EuVUXWOS14lK9QXXd+OvWmV/JJCn3pxREWM+FNdGKmqn
+                 O6Vj9G6zcQC5U2zpQb8C6zlKCs0KJTsATE63BgIvVgz5peCVO2x8V6JlwphVIOpVEcq4YIzsTmIrgZd+ecbHvjlWUx9qShi781d0BYGBbOuECzvlpxoiu7s/lbHSk
+                 9CaMZQEf5d63PrSan0cvfP+t1VWhgSQnZB12ZHYkG7GbcfN2b8xtn7Q9a1OsXzBPCKny5vSxKjMbah4of4Gv4v7WhcmH1oeer+GJbDPbaEVfzCo+ArDR4Fepc58Mp
+                 G98WQyZK3sGWs20Ike0yXQ484DnhFql7sDZoueQbiZajclSwgtNTLGZjRFYBP6pG7qqmT0mdOx/4ak/9jwjlwvtencxXocdRZMnisqnrPSVJRii89CrJ6oZEnsVO1
+                 yEw021LtaZ2vGZ/Uy0FRK6FNZNFFrX9/Ib8Ht7s8yQRE77SxvcQwJKnkMMhzhQYhnWHXsOHcGHeTd3pN9+zHWRwqjB29DYYmfCVfwERHdeTE3g6+WHWqEjdFXZDaE
+                 J14g/Fj8yFtcoHY10CjyJx7479INHoyXUPA6dWbmxtdlyRBEBwlayZBFzsPyK/BR929cBcvPohgrjXOjzacSJd4OU7To3DwTarEkyn3dn9Pjn17TShqSXQqYQPqQn
+                 nBiXSpl0Ev5oM28GKoorm+inwjB1aefQgKGDkyT2KF+hfHFpecnYzz5ceYV9eDH2LyCXb5Vcmdh9RcUBDuKztvA5+jsIO3l1ggduJurc8NXcnRKuunQBHZqIP9Z4E
+                 V2RVf7oVjTeJe+mXDg7prxEOLZyAEdTfBELTibHAUUOZkgjMjlyhWTBl9/Nz1LgwHOROCoKiJ2OXxwCszdUO+RQer+o8AVLEGvac68yhSLQ4glIMUNuMuxnjQqL6q+
+                 HYPxiRAiuPEPQ9ne6gHIEX9caRWnUGSsLpvHOqEAcRaojDx3el9d+STQCopaoO6/jYm7913Vz4FKhimix/klUDsW6+Hr49isDZUsfHrJXYqB/ZnPc5sC/UJZPLujMs
+                 T+XTx8u0BRuW880Z6SSR0rOq/HdRnzwKBZ3top7OHG+tAS43Pfg08G7R17P5wIp+8N47IsmfLBNwf3m0vnsjyN1416BnO/9MMw6ia5lWj+4GYfP7uu49l/0Uvrf1x
+                 fGlm9N4Yp7iUb99eg9Yq/puukDXYJ2nXk002LRz87SP6lFylRD8NpArJBSveLu81UAqPV0ITWiW9C4LBstcbBqgaianFXFEXG76bbHEl77sU1MozVdgsX/GhgD2HUG
+                 tnzJxtuH6g4HRo+Ui+E7NQvknFew+xJCmz6rEoWgJmreil1fcTbmAulO9eo+I0TZv1kHDVu/jgjiAMFe7qTkkBTEnKs6eH974nVMIfhCX7MnH7aUaPNu68lgPvFNUX
+                 jyKTlv08pGGPqc6ShicTLn73izeX29/4wRYIC7Nmho9szM6KKt8oWVZTq9qoR9ocQGxg/OvYMx88vslZNoqipzGPjzmM6jDkBWn2rglP4r+gtlR/8sHYtTzbr6MBy9
+                 vJjR1y8C0bQARTAla518c3WyD/JFGcgeKguz/26w4E/vuz1lFtZowdZxMAr5QapVJDUQangcbceKcI1e9iMWNSiZFVf60BqGJwkHSF2bFsqvr3787efFG7Q58mh7oy
+                 eJmfpMZ6ncXZs9vXBFb0YyYXKw89K4wzeqnPwbyDLOV8YJBtOFbJIRhvNwuwBkIl6K8xa0JZmF3oD1A+XrKOLAd3/ZfmmxycvDVjiikeJriqWCyWHt54VquKAoIxiA
+                 aIyJTeh3p4irK7aqmSY5gdhmEGBjQ+RTHE5LqwM2NlRyqV3d1aT2qAKDIpplxUSrUU48N1iiGgXs30grEGT+JOCsiR2REt94Ar51IpBb2prZYK+fqVcr0QQja6KUts
+                 rDKpXbFaquR22jtcMWo3ldptRRw6k/PNhnInIJmUja9lYUnL5ZA1UmuM+UIFvpZKlU1ZU6GUPycOg0AFmVcAoVAI6mwo1a3NlVTFYEYGQ61RquVSu23N5kMzw0N0f4
+                 MsQ23uTN+DuY5QQ2jdTmBmLE9YcaGUP+b6Y0LMAb477XFaZ9rchB20F6CSspqyKsP4clboFMh0Me1JIrGba3ua4g4oFnJWcZKVVMgPOdixQe5Cbe44UyBeU3xSCFil
+                 YMr6JKjIMA98vQ1psyXSKDI5xYic+DKjEjmr42kwKR9udnEFiYGDt5NZ5WdTzIIRWIo7DeBn216K15i2/32wICHd1A9bbbz9EeItOPr6x+fPf3y+beI5KO582/Pflj
+                 VHKELX+9+3sTZWINoHK/ZyA/LWffd8LFSheGe+XQm4hbx9310fBwSaNPzNPd2AfHbffR8HNaTN7tkGYhfOHwZUFb+Y9HpuTG0OnDh/R7HCVzHKFw/YqGjw/uSCrlnVM
+                 d3Fi2+Eer3qjz1BaEr45Up/Sn0KVk5PW59OlfnDM/n242ue80U21wis3nQRvP3Nz91sf+58j53vx9CnY9P8x+eB7cXAm9/54gXdAtLm31rp3mZ/+eU3loKVf3S+xy6wA
+                 +PA6cMyFIN9vN6XffJ0DT9j0+Z/4kuH/7DSxxNZ8ztkuQ3F69gRof245PXb27tEYlXPXs0fRKP31kr3l0z2X1b+v4R/+VfrUD7HsD1E16FukjUj7pbGfu2J1BBIQSA8G
+                 gs60uYfrcr7c/wfVvqAf/afFrpw8Dq2VESNUSDhMZfnMIyTMEn8/qsTj95WTyFt/h+Hrggq8xagG3MeNHOlVEVQx357KqkIl+/PZDnm0bSkgrTZsefd30NSdrPZipSK4
+                 2cGFvdu5YvFk7c/eJQ4UpAreu6Ubwz5oYDLF9b1WYtxigs58DW4nKt5E4mquUHTBDjVG8D5E06I3n+O1Jh0+p+P9OEJNXKANscCp1tbF4G+hN29G+VuIGeM/osOVqh4E
+                 tOpEeFbv8AKCvBq8fzy4GCvH9+YBzQcA+5O50qMA9uuSKKuc19sDR1pwk6faUJsH9uSAS6uruwhtAu77AG4nLTLKE5yviUek76/lZ+9H1aJR5Pe7mlC7OzAGLcx+Wzxx
+                 KbLnzZX1bsGOxD8X58HgGn79u9Da2m2wGrl9Lwt09jeaa9w/Zq52QOh+Yfrj/zMUFWQdmzTBKuFsg1erzy+5zi//frDKmaM9sHgXQVW/hUuhv1gmDN18D9KgCjatHko/
+                 Cpc4HPhmhYvBctDtblqmyYME+7+J+r7GOBrFCWWgyP+GxrBOM+/+liVAcRUShn9HGTQWE1wwtZFwvUeQDmaZzrOv/r5n6SNBMEJUrVRXCjvzjjR5pVY7KdUKFULFkt1S
+                 fDL42OjQahCXQyW4Wa4kAEk3S9j8jDETn793xkmZIJhmFSl2NAB7/vmMwg8p9a1Stns9EwlKDbqsMMlyDf38QrgoIPFbmBoTzilCnq9IRYrZaOVndxMuVKsC5yvWBOcL
+                 gZrKdTB3QpUR44n2+qodm/TcAKS5CmhqgDeM4aC7FaCJYnzgYqTUimIZJGrBcW6QPD2LuW6Nx25AQ9pl4qVXTgymHLt3qVMpqDiFhVhcA4FTXp379JTkqCkBiD96g5te
+                 ASxJFDDlQytJuTqqtCCZAcsVrkRWSeSeBDbREk0K8rtADCDsQP09VXQD0uXd0XQvj10AJix3jnuMxirCU7wsHdGtsDnnIp350HvjDQhlYFH3tkJDQYc2OD8wCdoHxZIg
+                 kP/D5HjqH7g4Flgmu/drU4xhUNc7W1t2fc8noPSfV/srvAUi1sy2vO43UXt6kJ+wDshB2PxtJVUjgUsfK/MhcDYI3s57UU7hR476ZR2Fon8nZdzi3PZkpVqb63Zt
+                 5TK/nvZ6PjYsi6VtBX31Fr6mIbvhXU5SDZLrYWPSZsXT/vSla10H3LitRdd0g2YpdayxyRdzLoxoUNs21rq4wUi1ziwyrFtg632OvCoIquOz7FGUB3xPswnEAZjT27tyOh
+                 yONtm6WNSZYTzC7g8ctGzb+rsFJU+phjDxMH5uX2ALoJSX690TjHFFFNMMcUUU4yFubm5ngMHtc268KPnOutXdDik3b6n5toY3R33SOfzafQr+Xw+MrJ2Pr8Ge/E
+                 034yCjw3wUWg2N6w1kvm8ebjcbM5jq81m0np+LhIxeRQyzU3bLxSa+RaeDO/KamR0d+2I0my4AD6XcHxE+xBHNA4qr+IsvgR6fkjjWBTHu+g8wXHzMIGDWhEcT1vP
+                 z9Ns1PxpHJ+39wdnwzhC3nauC0/Y5jh80+Ew5JmN04XRledxHAhkE4+HAYdIPHyERdLpLhE9CdPmYYIGdFfT6fnuFmiTbiGdTth+AdA9TCIsDe/KGp1ZHd1hGyLrbLwAGE
+                 ACc/PgV9A9iy5D8oXlqPEnsWE0XUA8N/AM+3QOSm8em4tG4QWRpeTG/FyLbnRpKWrSxdrnk/B8IRlm51v3tXVpAVzauWNRnG4Pjrnl5cjcPDzZajGyvIwVNpKwdvSQzWwW
+                 oqAA9XPZMd8lHIg3z+IRLMEiLQJ9jND4ETh1iGcj2Bqe38DxVheb4TxU2GSWXcWSNFuAGplGUgdglyHd9TQ8TrfoRtAg2TT0cxnL4Nksvm4yg8q8gc6ETdWy0i3g+No6Tu
+                 NPUJ0NNOLAIY0fgvEUzsbx9BrqWITFM47pzuXZ9SWcTmIFlqUP1+g40NfIengNnFoLZyKAQIZu003TQBUyeGEdj2JHYfAjURZcGcHZ/FKSpZtzoHYWb+bZOFDZFl2gD5E4
+                 29xIxsM4lnzKxteSFrpQeZfAgDL7C76vLSGsYoVsPMw26SyLr2fCcXDn53Fwrw7ZODAX6Ux8fW1zE92c5X5GYCASeBy0sIo9ocPz8Jay+bluumx+c7llTgGFxCqwRkf40u
+                 o6nW7RBUMBXLnUbBZAbagd6TCdsNBN0DQo3GxmCqDH4S5TBeQOBvBGc33OLMwaOgZucCELzdEGzR4hE5MAF7OHc1hhPU6jvoEBhqNzdNyN1VoLZ0GfoaLC31wDet1NF+8Y
+                 sUiGTiaA6mzgaaB2iRbdKB7Prm0WjLELLfM83kU3SoPz81F4fslGN77+xLi0VRjPID8EiBay0FIYskMtGpYSjCLQI9Q38HPhVewpfeiCLdDieHgOW82E4XgFdxMv9NC11
+                 D2ijzbAaEzgR0l6PdKiC0ZzOIzHn26alnmzm65xHiiJnS7QE3Aqe5hoF4aTWCvKKCApdNMtoJsJNMKgC5Rjs8C60WXgRzNsBmvTTQ6lu4Rn8qD1QjzTDMN7atDFEmsZOsw
+                 CW9SfLjwfBucTdrrY5hG6tGAWWkzVaLpYmE5u4uuuPLBBF2uyTehu8iwLlfkIHdroAk2Ih4EFzsTjcJC2lDmRwCLRJywwIX3pFsD51Sg4lbTRXU4sA/9y1BbQKLqwWjrcV
+                 mZgcJ4eGmJySzeJBAFsyREsARZ4no3b6AI7Ho8DRTtisyg8QnTTaEwth4Gz6Es3ic4XIBPQbdNHIrpH0D1BnWzTZY82EJL96MYzUWwzzK4jzYOSTtDxOG6PRR3QBdocBm6
+                 IBT4GNBYHxjFupwtubbwJ7w0db86ZdJfxOP70CPixQn+6wP7Q+SPQryh0A3TeQhdGaE8PWRZfNQuzLI2A96ObhREm4gfMMQpf1+Nxd7qMrcbxMPyMPIUOYB3efeBYQTC8h
+                 rMwzOiimzCC69ZHK8wwwogssDdGbWhBYJUNM8xAzoXehNqBmzFBFEU0S+jSdVPDl/E2YJhhscy4YZmzuBGlF7JGNA7CtDVXbC0obG62R1bC1T1LdK7si+X2+dVCd6w7By
+                 51EK5DALoRbHOz1bEIcl/LuEtdfjhAdLswF3lCZ8aZGT0E2Okugcg03b/yw4ed7gYePnyswgXDvneQR6KFiSR5pphiiimmmGKKKaaY4v8D/g/jXoN5JRt6MwAAAABJRU5ErkJggg==" alt="">
+                </div>
+                 <% }else{ %>
                 <table class="table table-bordered">
                     <thead>
                       <tr>
@@ -52,6 +113,7 @@
                      <% }) %>
                     </tbody>
                   </table>
+                  <% } %>
 
 
 
@@ -65,75 +127,6 @@
     <!-- Cart End -->
 
 
-    <!-- Footer Start -->
-    <div class="container-fluid bg-secondary text-dark mt-5 pt-5">
-        <div class="row px-xl-5 pt-5">
-            <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
-                <a href="" class="text-decoration-none">
-                    <h1 class="mb-4 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border border-white px-3 mr-1">E</span>Shopper</h1>
-                </a>
-                <p>Dolore erat dolor sit lorem vero amet. Sed sit lorem magna, ipsum no sit erat lorem et magna ipsum dolore amet erat.</p>
-                <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>123 Street, New York, USA</p>
-                <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>info@example.com</p>
-                <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+012 345 67890</p>
-            </div>
-            <div class="col-lg-8 col-md-12">
-                <div class="row">
-                    <div class="col-md-4 mb-5">
-                        <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
-                        <div class="d-flex flex-column justify-content-start">
-                            <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                            <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                            <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
-                            <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                            <a class="text-dark mb-2" href="checkout.html"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-                            <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-5">
-                        <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
-                        <div class="d-flex flex-column justify-content-start">
-                            <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                            <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                            <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
-                            <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                            <a class="text-dark mb-2" href="checkout.html"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-                            <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-5">
-                        <h5 class="font-weight-bold text-dark mb-4">Newsletter</h5>
-                        <form action="">
-                            <div class="form-group">
-                                <input type="text" class="form-control border-0 py-4" placeholder="Your Name" required="required" />
-                            </div>
-                            <div class="form-group">
-                                <input type="email" class="form-control border-0 py-4" placeholder="Your Email"
-                                    required="required" />
-                            </div>
-                            <div>
-                                <button class="btn btn-primary btn-block border-0 py-3" type="submit">Subscribe Now</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row border-top border-light mx-xl-5 py-4">
-            <div class="col-md-6 px-xl-0">
-                <p class="mb-md-0 text-center text-md-left text-dark">
-                    &copy; <a class="text-dark font-weight-semi-bold" href="#">Your Site Name</a>. All Rights Reserved. Designed
-                    by
-                    <a class="text-dark font-weight-semi-bold" href="https://htmlcodex.com">HTML Codex</a><br>
-                    Distributed By <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
-                </p>
-            </div>
-            <div class="col-md-6 px-xl-0 text-center text-md-right">
-                <img class="img-fluid" src="img/payments.png" alt="">
-            </div>
-        </div>
-    </div>
-    <!-- Footer End -->
 
     <script>
         if ( window.history.replaceState ) {

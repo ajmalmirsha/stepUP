@@ -186,7 +186,7 @@
                 </div>
                 <div class="mb-3">
                   <label class="form-label" for="basic-default-message">image</label>
-                 <input type="file" onchange="show(this)" name="image" accept="image/*" required >
+                 <input type="file" onchange="show(this)" name="image" accept="image/*"  >
                 </div>
 
                 <% if(typeof err !== 'undefined'){ %>
@@ -211,7 +211,13 @@
       input.type = ''
       input.type = 'file'
       $('#user_img').attr('src', "");
-      alert("Only these file types are accepted : " + validExtensions.join(', '));
+      Swal.fire({
+  icon: 'error',
+  title: 'sorry...',
+  text: "Only these file types are accepted : " + validExtensions.join(', '),
+ 
+})
+    
     }
     else {
       if (input.files && input.files[0]) {

@@ -1,73 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- include("../layouts/header.ejs") %>
 
-<head>
-  <meta charset="utf-8">
-  <title>StepUP</title>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <meta content="Free HTML Templates" name="keywords">
-  <meta content="Free HTML Templates" name="description">
-
-
-  <!-- Favicon -->
-  <link href="img/favicon.ico" rel="icon">
-
-  <!-- Google Web Fonts -->
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
-    rel="stylesheet">
-
-  <!-- Font Awesome -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-
-  <!-- Libraries Stylesheet -->
-  <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-
-
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
-
-
-
-
-  <!-- Customized Bootstrap Stylesheet -->
-  <link href="/css/style.css" rel="stylesheet">
-
-
-
-
-
-
-  <!-- <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet"> -->
-
-  <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet"> -->
-
-
-
-  <!-- <link rel="stylesheet" href="/user_assets/assets/css/zoom.css"> -->
-
-  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
-
-
-
-
-
-
-
-  <!-- new cdn for my modal -->
+  <!-- new cdn  modal -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-
-
-
-</head>
-
-<body>
 
   <!-- Navbar Start -->
 
@@ -76,11 +13,13 @@
     crossorigin="anonymous" referrerpolicy="no-referrer" />
   <!-- Navbar End -->
 
+     <%- include("../layouts/navbar.ejs") %>
+
   <section class="h-100 gradient-custom-2">
 
     <div class="container py-5 h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col col-lg-9 col-xl-7">
+        <div class="col col-lg-12 col-xl-12">
           <div class="card">
             <div class="rounded-top text-white d-flex flex-row" style="background-color: #000; height:200px;">
               <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
@@ -99,14 +38,31 @@
             <div class="p-4 text-black" style="background-color: #f8f9fa;">
               <div class=" justify-content-start  py-1">
                 <div style="margin-left: 150px;">
-                  <% if(typeof err !=='undefined' ){ %>
-                    <p class="text-danger"><%- err %></p>
-                    <% } %>
+                 
                       <button type="button" style="float: right;border: none;background: transparent;" class=""
-                        data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"> <i
-                          class="fa-sharp fa-regular fa-pen-to-square"></i></button>
+                        data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"> 
+                        <i
+                          class="fa-sharp fa-regular fa-pen-to-square"></i>
+                        </button>
                       <div>Email&nbsp;: <span><%- data.email %></span></div>
                       <div>Phone: <span><%- data.phone %></span></div>
+                          </button>
+                          <div>Password: <span> <i class="fa-sharp fa-solid fa-star-of-life"> </i> <i class="fa-sharp fa-solid fa-star-of-life"></i> <i class="fa-sharp fa-solid fa-star-of-life"></i> <i class="fa-sharp fa-solid fa-star-of-life"></i> </span>
+                          <div>Wallet: <span><%- data.wallet %></span>
+                        
+                            <% if(typeof err !== "undefined"){ %>
+                            <p class="text-danger"><%- err %></p>
+                          <% } %> 
+                           
+                            <button type="button" style="float: right;border: none;background: transparent;" class=""
+                        data-toggle="modal" data-target="#changepassword" data-whatever="@mdo"> 
+                        <i
+                          class="fa-sharp fa-regular fa-pen-to-square"></i>
+                        </button>
+
+
+
+                          </div>
                 </div>
 
               </div>
@@ -115,8 +71,9 @@
                 data-target="#addressModal" data-mdb-ripple-color="dark" style="z-index: 1;display: block;float: right">
                 Add Address
               </button></div>
-            <a href="/orderlist"> <button class="btn btn-outline-dark mt-4 mr-3"
-                data-mdb-ripple-color="dark">Orders</button></a>
+              
+            <button type="button" class="btn btn-outline-dark  mt-4 mr-3 w-25"
+                data-mdb-ripple-color="dark"><a href="/orderlist"  data-mdb-ripple-color="dark" style="color: #000;">Orders</a></button>
             <% if(typeof full !=='undefined' ){ %>
               <p class="text-danger"><%- full %></p>
               <% } %>
@@ -139,6 +96,14 @@
                           <i class="fa-solid fa-trash"></i>
                         </a>
                       </div>
+
+
+
+
+
+
+
+
 
 
                       <!-- Edit-Address-Modal -->
@@ -332,6 +297,59 @@
   </div>
 
   <!-- ------------- -->
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="changepassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Change Password</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/change-password" id="passform" method="post">
+          <input type="text" name="oldPass" class="form-control my-2" placeholder="Enter your old Password">
+          <input type="text" name="newPass" id="newPass" class="form-control my-2" placeholder="New Password">
+          <input type="text" name="newPassconfirm" id="newPassconfirm" onkeyup="check()" class="form-control my-2" placeholder="re-enter New Password">
+          <p id="err" class="text-danger mb-3"></p>
+            <button class="btn-primary" id="myButton" type="submit">submit</button>
+        </form>
+      </div>
+    
+    </div>
+  </div>
+</div>
+
+<script>
+  function  check(){
+  console.log("key pressed !");
+  // = document.getElementById("#newPassconfirm").value()
+
+  const conf =  $("#newPassconfirm").val()
+  const newPass =  $("#newPass").val()
+
+console.log("conffffffff");
+console.log(conf);
+console.log("neeeeeeeeew");
+
+console.log(newPass);
+  if(conf !== newPass){
+    console.log("ddj");
+  document.getElementById("err").innerHTML = "~~~~~~~~~~~~~"
+  $('#myButton').prop('disabled', true);
+  }else{
+    document.getElementById("err").innerHTML = ""
+    document.getElementById("myButton").removeAttribute("disabled");
+    }
+ 
+  }
+</script>
+
 
 
 

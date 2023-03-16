@@ -12,103 +12,106 @@ const moment = require ("moment")
 const { trusted } = require('mongoose')
 
 module.exports ={
-    banner: async (req,res)=>{
+    banner: async (req,res,next)=>{
         try {
             const data = await banners.find()
            res.render('users/banner',{data})  
         } catch (error) {
-            console.log(error);
+          next()
         }
        
     },
-    addBanner: async (req,res)=>{
+    addBanner: async (req,res,next)=>{
         try {
               res.render('users/add-banner')
         } catch (error) {
-            console.log(error);
+          next()
         }
       
     },
-    banner_save: async (req,res)=>{
+    banner_save: async (req,res,next)=>{
         try {
            const data = new banners({
             title:req.body.title,
             image:req.file.filename
         })
       const result =  await data.save()
-          if(result){
-            console.log("saved");
+
              res.redirect('/admin/banner')
-          }else{
-            console.log('problem in banner save');
-          }
-            
-            
+                         
         } catch (error) {
-            console.log(error);
+          next()
         }
        
       
     },
-    delete_banner: async (req,res)=>{
+    delete_banner: async (req,res,next)=>{
         try {
         fs.unlink(path.join('/banner-img'+req.params.id),()=>{})
         await banners.deleteOne({_id:req.params.id})
         res.json({success:true})      
         } catch (error) {
-          console.log(error.message);
+            res.render("admin_error")
+
+
         }  
     },
-    edit_banner: async (req,res)=>{
+    edit_banner: async (req,res,next)=>{
         try {
         const data = await banners.findOne({_id:req.params.id})
         res.render('users/edit-banner',{data})        
         } catch (error) {
-          console.log(error.message);
+            res.render("admin_error")
+
+
         }
     },
-    do_edit_banner : async (req,res)=>{
+    do_edit_banner : async (req,res,next)=>{
      try {
         await banners.updateOne({_id:req.params.id},{$set:{
             title:req.body.title
         }})
         res.redirect('/admin/banner')
      } catch (error) {
-        console.log(error.message);
+        res.render("admin_error")
+
      }
     },
-    delete_image: async (req,res)=>{
+    delete_image: async (req,res,next)=>{
         try {
          fs.unlink(path.join('/banner-img'+req.params.id),()=>{})
          await banners.updateOne({_id:req.params.obj},{$unset:{image:req.params.id}})
          res.redirect('/admin/edit-banner/'+req.params.obj)       
         } catch (error) {
-          console.log(error.message);
+        next()
         }
     },
-    edit_cata_img: async (req,res)=>{
+    delete_cata_img: async (req,res,next)=>{
         try {
         fs.unlink(path.join('/catagory-img',req.params.imgid),()=>{})
         await catagory.updateOne({_id:req.params.proid},{$unset:{image:req.params.imgid}})
         res.redirect('/admin/edit-category/'+req.params.proid)       
         } catch (error) {
-          console.log(error.message);
+            res.render("admin_error")
+
+
         }
 
     },
-    show_coupons: async (req,res)=>{
+    show_coupons: async (req,res,next)=>{
         try {
-          const data = await couponModel.find()
+          let data = await couponModel.find()
+     data = data.reverse()
             res.render('coupon/couponlist',{data,moment:moment})
             
         } catch (error) {
-            console.log(error.message);
+          next()
         }
     },
-    add_coupon: async (req,res)=>{
+    add_coupon: async (req,res,next)=>{
      try {
 
-      const  {
+      let  {
         couponName,
         description,
         maxprice,
@@ -117,10 +120,28 @@ module.exports ={
         code
     
     } = req.body
+    couponName = couponName.trim()
+    description = description.trim()
+    maxprice = maxprice.trim()
+    discountpercentage = discountpercentage.trim()
+    date = date.trim()
+    code = code.trim()
 
-        const reg =  RegExp(code,'i')
+
+    if(
+        couponName==""||
+        description==""||
+        maxprice==""||
+        discountpercentage==""||
+        date==""||
+        code==""
+    ){
+        const data = await couponModel.find()
+        res.render('coupon/couponlist',{data,moment:moment,message:"all feilds are required !!"})
+
+    }else{
+       const reg =  RegExp(code,'i')
         const exist = await couponModel.findOne({code:reg})
-        console.log(exist);
         if(exist){
          
             const data = await couponModel.find()
@@ -138,61 +159,92 @@ module.exports ={
           })
             await data.save()
             res.redirect('/admin/coupons')
-        }
+        } 
+    }
+
+        
    
 
      } catch (error) {
-        console.log(error.message);
+      next()
      }
     },
-    del_coupon: async (req,res)=>{
+    del_coupon: async (req,res,next)=>{
         await couponModel.deleteOne({_id:req.params.id})
        res.json({success:true})
     },
-    edit_coupon_page: async (req,res)=>{
+    edit_coupon_page: async (req,res,next)=>{
         try {
             const data = await couponModel.findOne({_id:req.params.id})
             res.render('coupon/edit-coupon',{data,moment:moment})
         } catch (error) {
-            console.log(error.message);
+            res.render("admin_error")
+
         }
     },
-    do_edit_coupon: async (req,res)=>{
+    do_edit_coupon: async (req,res,next)=>{
         try {
-            console.log("dfffd");
-            console.log(req.body.dates);
-         const result =  await couponModel.updateOne({_id:req.params.id},{$set:{
-          coupon_name:req.body.couponName,
-          description:req.body.description,
-          maxdiscountprice: req.body.maxprice,
-          discountpercentage: req.body.discountpercentage,
-          date:req.body.dates,
-          code: req.body.code 
-            }})
-            const id = req.params.id
-                res.redirect('/admin/coupons')
+            let couponName  = req.body.couponName
+            let description  = req.body.description
+            let maxprice  = req.body.maxprice
+            let discountpercentage  = req.body.discountpercentage
+            let code  = req.body.code
+            let dates  = req.body.dates
+            couponName = couponName.trim()
+            description = description.trim()
+            maxprice = maxprice.trim()
+            discountpercentage = discountpercentage.trim()
+            code = code.trim()
+            dates = dates.trim()
+
+            if(
+                couponName==""||
+                description==""||
+                maxprice==""||
+                discountpercentage==""||
+                code==""||
+                dates==""){
+
+   const data = await couponModel.findOne({_id:req.params.id})
+            res.render('coupon/edit-coupon',{data,moment:moment,message:"all feilds are required !!"})
+            }else{
+
+                const result =  await couponModel.updateOne({_id:req.params.id},{$set:{
+                 coupon_name:req.body.couponName,
+                 description:req.body.description,
+                 maxdiscountprice: req.body.maxprice,
+                 discountpercentage: req.body.discountpercentage,
+                 date:req.body.dates,
+                 code: req.body.code 
+                   }})
+                   const id = req.params.id
+                       res.redirect('/admin/coupons')
+            }
+          
 
         } catch (error) {
-            console.log(error.message);
+            res.render("admin_error")
+
         }
     },
-    edit_banner_img: async (req,res)=>{
+    edit_banner_img: async (req,res,next)=>{
         try {
            await banners.updateOne({_id:req.params.id},{$set:{image:req.file.filename}})
            res.redirect('/admin/edit-banner/'+req.params.id)
         } catch (error) {
-            console.log(error.message);
+          next()
         }
     },
-    list_orders: async (req,res)=>{
+    list_orders: async (req,res,next)=>{
         try {
-            const order = await orderModel.find().populate("product.productId").exec()
+            const order = await orderModel.find().populate("product.productId").sort({date:-1}).exec()
             res.render("users/order-list",{order,moment: moment })
+            
         } catch (error) {
-            console.log(error.message);
+          next()
         }
     },
-    view_order: async (req,res)=>{
+    view_order: async (req,res,next)=>{
         try {
             const order = await orderModel.findById(req.params.id).populate('product.productId').populate("userId").exec()
            if(order.coupon){
@@ -203,10 +255,11 @@ module.exports ={
            }
             
         } catch (error) {
-            console.log(error.message);
+            res.render("admin_error")
+
         }
     },
-    change_status : async (req,res)=>{
+    change_status : async (req,res,next)=>{
         try {
 
             const order = await orderModel.findById(req.body.orderId)
@@ -224,17 +277,17 @@ module.exports ={
            
             }
         } catch (error) {
-           console.log(error.message); 
+         next() 
         }
     },
-    sales_report: async (req,res)=>{
+    sales_report: async (req,res,next)=>{
         try {
             res.render("users/sales-report")
         } catch (error) {
-            console.log(error.message);
+          next()
         }
     },
-    sales_reports: async(req,res)=>{
+    sales_reports: async(req,res,next)=>{
         try {
          
             const {
@@ -242,28 +295,23 @@ module.exports ={
                 to
             } = req.body
 
-// create a new date object with the existing date
-const existingDate = new Date(to);
+        // create a new date object with the existing date
+        const existingDate = new Date(to);
 
-// add one day to the existing date
-const newDate = new Date(existingDate);
-newDate.setDate(existingDate.getDate() + 1);
+        // add one day to the existing date
+        const newDate = new Date(existingDate);
+        newDate.setDate(existingDate.getDate() + 1);
 
-// log the new date in a specific format (e.g. YYYY-MM-DD)
-   const dd = newDate.toISOString().slice(0,10)// output: 2023-03-11
+        // log the new date in a specific format (e.g. YYYY-MM-DD)
+        const dd = newDate.toISOString().slice(0,10)// output: 2023-03-11
  
-     
-
-            console.log(from);
-            console.log(dd);
-          const data=await orderModel.find({status:"delevered", date: {
+            const data=await orderModel.find({status:"delevered", date: {
             $gte:new Date(from),
             $lte:new Date(dd) 
           }}).populate("product.productId")
-         console.log(data);
-          res.render('users/sales-report',{data,moment:moment})
+          res.render('users/sales-report',{data,moment:moment,print:true})
         } catch (error) {
-            console.log(error.message);
+          next()
         }
     }
     

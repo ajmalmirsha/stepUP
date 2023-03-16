@@ -162,8 +162,8 @@
         <div class="col-xl my-2 ">
           <div class="card mb-4">
             <div class="card-header d-flex justify-content-between align-items-center">
-              <h5 class="mb-0">Edit Product</h5>
-              <!-- <small class="text-muted float-end">Default label</small> -->
+              <h5 class="mb-0">Edit Brand</h5>
+              
             </div>
             <div class="card-body">
               <form  action="/admin/edit-brand/<%- data._id %>" method="post" enctype="multipart/form-data" >
@@ -195,7 +195,9 @@
                 </div>
 
                 <input type="file" onchange="show(this)" value=""  name="image" accept="image/*" >
-                
+                <% if(typeof err !== "undefined"){ %>
+                  <p class="text-danger"><%- err %></p>
+               <% } %>
                 <button style="display: block;" type="submit" class="btn btn-primary my-2">Send</button>
          
               </form>

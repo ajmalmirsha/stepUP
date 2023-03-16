@@ -57,6 +57,10 @@ const userSchema = new mongoose.Schema({
       type: Number
       
     },
+    wallet:{
+      type: Number,
+      default:0
+    },
     wishlist: [{
         product: {
           type: mongoose.Types.ObjectId,

@@ -15,7 +15,10 @@
         <div class="container">
           <!-- Title -->
           <div class="d-flex justify-content-between align-items-center py-3">
-            <h2 class="h5 mb-0"><a href="#" class="text-muted"></a>Hai <%- data.userId.username %> , Thank for your order</h2>
+            <% if(data.status == "delevered" || data.status == "pending"  || data.status == "confirmed" ){ %>
+                         <h2 class="h5 mb-0"><a href="#" class="text-muted"></a>Hai <%- data.userId.username %> , Thank for your order</h2>
+ 
+           <% } %>
           </div>
         
           <!-- Main content -->
@@ -27,7 +30,7 @@
                   <div class="mb-3  justify-content-between">
                     <div class="d-block">
                         <span>Date :</span>
-                      <span class="me-3"><% date = data.date %>  <%=moment().format("Do MMM YYYY");   %></span>
+                      <span class="me-3"><% date = data.date %>  <%=moment(date).format("Do MMM YYYY");   %></span>
                      
                     </div>
                    
@@ -36,13 +39,16 @@
                       <span class="me-3"><%- data.orderId %></span>
                      
                     </div>
-                    <div class="mr-5" style="float: right;">
+                    
+                    <div class="mr-5"  style="float: right;">
                       <% if(data.status == "delevered"){ %>
-                      <a onclick="cancelOrder('<%- data.orderId %>','return')"  class="return btn btn-warning">return</a>
-                      <% }else if (data.status == "confirmed" || "pending"){ %>
+                        <% if(typeof returns !== "undefined"){ %>
+                      <a onclick="cancelOrder('<%- data.orderId %>','return')" id="returnButton"  class="return btn btn-warning">return</a>
+                         <% } %>
+                      <% }else if (data.status == "confirmed" || data.status == "pending"){ %>
                       <a  onclick="cancelOrder('<%- data.orderId %>','canceled')"  class="cancel btn btn-danger">Cancel</a>
                       <% }else{ %>
-                      <a class="btn btn-warning"><%- data.status %></a>
+                      <a class="btn btn-secondary"><%- data.status %></a>
                         <% } %>
                     </div>
 
@@ -366,6 +372,11 @@
     </div>
   </div>
 </div>
+
+
+<script>
+  
+</script>
       <script>
         function invoice(){
           var divToPrint = document.getElementById("invoice");
@@ -398,7 +409,10 @@
         success: (response)=>{
           console.log();
           $(".cancel").html(response.success)
+         location.reload()
         
+
+
        
         }
        })

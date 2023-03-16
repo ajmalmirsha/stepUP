@@ -162,9 +162,13 @@
         <div class="row">
           <div class="col-xl my-2 ">
             <div class="card mb-4">
-              <div class="card-header d-flex justify-content-between align-items-center">
+              <div class="card-header  justify-content-between align-items-center">
                 <h5 class="mb-0">Add Product</h5>
+                <% if(typeof err !== "undefined"){ %>
+                 <br> <p class="text-danger"><%- err %></p>
+                     <% } %>
               </div>
+             
               <div class="card-body">
                 <form action="/admin/addproduct" method="post" enctype="multipart/form-data">
                   <div class="mb-3">
@@ -173,17 +177,17 @@
                   </div>
                   <div class="mb-3">
                     <select name="catagory" class="form-select" aria-label="Default select example">
-                      <option selected>Select Catagory</option>
+                      <option value="" selected>Select Catagory</option>
                       <% data.forEach((data)=>{ %>
                         <option value="<%- data._id %>"><%- data.catagory_name %></option>
                         <% }) %>
                     </select>
 
-
+                  </div>
 
                     <div class="mb-3">
                       <select name="brand" class="form-select" aria-label="Default select example">
-                        <option selected>Select Brand</option>
+                        <option value="" selected>Select Brand</option>
                         <% brands.forEach((data)=>{ %>
                           <option value="<%- data._id %>"><%- data.name %></option>
                           <% }) %>
@@ -226,18 +230,16 @@
                           <div>
                             <img id="user_img" height="130" width="130" style="border:solid" />
                           </div>
-                          <div>
+                          <div class="py-3">
                             <input type="file" title="search image" multiple id="file" name="image"
                               onchange="show(this)" accept="image/*"  />
                           </div>
                         </div>
                       </div>
                     </div>
-                    <% if(typeof err !== "undefined"){ %>
-                <p class="text-danger"><%- err %></p>
-                   <% } %>
+                
 
-                    <button type="submit" class="btn btn-primary">Add product</button>
+                    <button type="submit" class="btn btn-primary my-3">Add product</button>
                 </form>
               </div>
             </div>

@@ -173,43 +173,23 @@
               <form  action="/admin/edit-banner-data/<%- data._id %>" method="post"  >
            
                 <div class="mb-3">
-                  <label class="form-label" for="basic-default-fullname">banner Name</label>
+                  <label class="form-label" for="basic-default-fullname">banner title <small>* not necessary</small></label>
                   <input type="text" value="<%- data.title %>" name="title" class="form-control" id="basic-default-fullname" />
                 </div>
-                
-
-               
-
-                
-
-                
-
-              
-               
-
                 <div>
                 
-                 
-                <img src="/banner-img/<%-data.image %>" alt="" style="width: 100px;">
-              
-                </div>
-
-                <!-- <a href="/admin/edit-image/<%- data._id %>" class="btn btn-primary">image</a> -->
-                <!-- <input type="file" value="" multiple name="image"> -->
-
-
-
-                <!-- hgfhgh -->
-                
-                <button style="display: block;" type="submit" class="btn btn-primary my-2">Send</button>
+               <img src="/banner-img/<%-data.image %>" alt="" style="width: 300px;">
+               <button  type="button" class="btn btn-secondary mx-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                edit image
+              </button>
+               </div>
+                <button style="display: block;" type="submit" class="btn btn-primary my-2">Edit</button>
          
               </form>
 
       
 <!-- Button trigger modal -->
-<button style="margin-left: 430px;margin-top: -230px;" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-  edit image
-</button>
+
 
 <!-- Modal -->
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -221,17 +201,17 @@
       </div>
       <div class="modal-body">
         <form action="/admin/edit-banner-img/<%- data._id %>" method="post" enctype="multipart/form-data">
-          <input multiple type="file" name="image" accept="image/*">
+          <input multiple class="my-3" type="file" name="image" accept="image/*">
 
 
        
-<div style="background-color: rgb(255, 255, 255);width: 100%;height: 80px;border: solid;">
-<img style="width: 80px;" src="/banner-img/<%- data.image %>" alt="">
-<a href="/admin/delete-banner-image/<%- data.image %>/<%- data._id %>" style="float: right;" class="btn btn-danger my-3">delete</a>
+<div class="p-1" style="background-color: rgb(255, 255, 255);width: 100%;border: solid;">
+<img style="width: 100px;"  src="/banner-img/<%- data.image %>" alt="">
+<a href="/admin/delete-banner-image/<%- data.image %>/<%- data._id %>" style="float: right;" class="btn btn-danger my-2">delete</a>
 </div>
 
 
-          <button type="submit" class="btn btn-primary">submit</button>
+          <button type="submit" class="btn btn-primary my-3">submit</button>
        
         <!-- <button type="submit" class="btn btn-primary">Understood</button> -->
         <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->

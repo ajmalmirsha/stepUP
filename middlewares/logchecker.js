@@ -7,7 +7,7 @@
      res.redirect('/admin')
      }  
       } catch (error) {
-        console.log(error.message);
+        res.render("admin_error")
       }
    
     },
@@ -20,7 +20,7 @@
      next()
      }  
       } catch (error) {
-        console.log(error.message);
+        res.render("admin_error")
       }
     
     },
@@ -33,7 +33,7 @@
      res.redirect('/user_login')
      }  
       } catch (error) {
-        console.log(error.message);
+        res.render("user_error")
       }
     
     },
@@ -47,7 +47,8 @@
     next()
     }  
       } catch (error) {
-        console.log(error.message);
+        res.render("user_error")
+
       }
    
     },
@@ -61,7 +62,8 @@
     next()
     }
         } catch (error) {
-          console.log(error.message);
+          res.render("user_error")
+
         }
    
     }

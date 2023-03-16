@@ -167,8 +167,8 @@
           <tr>
             <th scope="col">#</th>
             <th scope="col">BRAND NAME</th>
-            <th scope="col">IMAGE</th>
             <th scope="col">DESCRIPTION</th>
+            <th scope="col">IMAGE</th>
             <th scope="col">ACTIONS</th>
           </tr>
         </thead>
@@ -186,13 +186,35 @@
             </td>
             <td>
                 <a href="/admin/edit-brand/<%- data._id %>" class="btn btn-primary">Edit</a>
-                <a href="/admin/delete-brand/<%- data._id %>" class="btn btn-danger">Delete</a>
+                <a  onclick="deletebrand('<%- data._id %>')" class="btn btn-danger text-white">Delete</a>
             </td>
              </tr>
             <% }) %>
         </tbody>
         
       </table>
+
+      <script>
+      function deletebrand(id){
+        Swal.fire({
+          title: 'Are you sure?',
+          text: "You wan't to delete this brand !",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'yes,delete!'
+      }).then((result)=>{
+        if(result.isConfirmed){
+   $.ajax({
+    url:"/admin/delete-brand/"+id,
+    success: (response)=>{
+   location.reload()
+    }
+   })
+  }})
+      }
+      </script>
 
         <script>
         $(document).ready( function () {

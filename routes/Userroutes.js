@@ -91,6 +91,8 @@ app.get('/resend-otp', is_not_logged, user.sendresendOTP_load)
 //    !---------------------------------------------------------!
 
 
+app.get('/view-detail/:id', user.view_detail)
+
 
 // LOGGED USERS
 
@@ -98,7 +100,6 @@ app.use(login)
 
 
 //PRODUCT MANAGMENT
-app.get('/view-detail/:id', user.view_detail)
 
 app.post('/search-product', user.search_product)
 
@@ -120,7 +121,7 @@ app.get('/sort-product/hightolow', user.hightolow)
 
 app.get('/catagory/:id', user.catagory)
 
-app.get('/sort-catagory/:id', user.sort_catagory)
+app.get('/sort-catagory/:id/:search', user.sort_catagory)
 
 //    !---------------------------------------------------------!
 
@@ -138,17 +139,7 @@ app.get('/delete-from-cart/:id', cart.delete_item)
 
 // COUPON MANAGMENT
 
-
-// dont't want
-// app.get('/coupon-apply', cart.show_cart)
-
-// app.post('/coupon-apply', cart.coupon_apply)
-// -------
-
 app.post('/coupon-apply',user.apply_coupon)
-
-
-
 
 //    !---------------------------------------------------------!
 
@@ -171,6 +162,7 @@ app.get('/delete-wishlist/:id', wishlist.delete_wishlist)
 
 app.get('/user-profile',user.user_profile)
 app.all('/edit-user-profile',user.do_edit_profile)
+app.post('/change-password',user.change_password)
 
 // ADDRESS MANAGMENT
 
@@ -193,6 +185,9 @@ app.get("/cancel-order/:id/:status",user.order_cancel)
 //ONLINE PAYMENT
 
 app.post("/verify-payment",user.online_payment)
+
+
+
 // <------------------------------------------------------------------------------------------------------------------>
 // <------------------------------------------------------------------------------------------------------------------>
 

@@ -13,346 +13,352 @@
     crossorigin="anonymous" referrerpolicy="no-referrer" />
   <!-- Navbar End -->
 
-     <%- include("../layouts/navbar.ejs") %>
+  <%- include("../layouts/navbar.ejs") %>
 
-  <section class="h-100 gradient-custom-2">
+    <section class="h-100 gradient-custom-2">
 
-    <div class="container py-5 h-100">
-      <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col col-lg-12 col-xl-12">
-          <div class="card">
-            <div class="rounded-top text-white d-flex flex-row" style="background-color: #000; height:200px;">
-              <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
-                  alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
-                  style="width: 150px; z-index: 1">
-                <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark" style="z-index: 1;">
-                  <a href="/userhome" style="color: black;"> Home </a>
-                </button>
+      <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col col-lg-12 col-xl-12">
+            <div class="card">
+              <div class="rounded-top text-white d-flex flex-row" style="background-color: #000; height:200px;">
+                <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
+                  <img
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIH5efPMLE_yEELrFragrSk-6-gnwHI4qXyQ&usqp=CAU"
+                    alt="Generic placeholder image" class="img-fluid img-thumbnail mt-1" style="width: 150px;">
+
+                  <button type="button" class="btn btn-outline-dark mt-4" data-mdb-ripple-color="dark"
+                    data-toggle="modal" data-target="#addressModal" data-mdb-ripple-color="dark"
+                    style="z-index: 1;display: block;float: right">
+                    Add Address
+                  </button>
+                </div>
+                <div class="ml-2" style="margin-top: 160px;">
+                  <h5 style="color: #f8f9fa;"><%- data.username %></h5>
+
+                </div>
               </div>
-              <div class="ml-2" style="margin-top: 160px;">
-                <h5 style="color: #f8f9fa;"><%- data.username %></h5>
+              <div class="p-4 text-black" style="background-color: #f8f9fa;">
+                <div class=" justify-content-start  py-1">
+                  <div style="margin-left: 150px;">
 
-              </div>
-            </div>
-            <div class="p-4 text-black" style="background-color: #f8f9fa;">
-              <div class=" justify-content-start  py-1">
-                <div style="margin-left: 150px;">
-                 
-                      <button type="button" style="float: right;border: none;background: transparent;" class=""
-                        data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"> 
-                        <i
-                          class="fa-sharp fa-regular fa-pen-to-square"></i>
-                        </button>
-                      <div>Email&nbsp;: <span><%- data.email %></span></div>
-                      <div>Phone: <span><%- data.phone %></span></div>
-                          </button>
-                          <div>Password: <span> <i class="fa-sharp fa-solid fa-star-of-life"> </i> <i class="fa-sharp fa-solid fa-star-of-life"></i> <i class="fa-sharp fa-solid fa-star-of-life"></i> <i class="fa-sharp fa-solid fa-star-of-life"></i> </span>
-                          <div>Wallet: <span><%- data.wallet %></span>
-                        
-                            <% if(typeof err !== "undefined"){ %>
-                            <p class="text-danger"><%- err %></p>
-                          <% } %> 
-                           
+                    <button type="button" style="float: right;border: none;background: transparent;" class=""
+                      data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">
+                      <i class="fa-sharp fa-regular fa-pen-to-square"></i>
+                    </button>
+                    <div>Email&nbsp;: <span><%- data.email %></span></div>
+                    <div>Phone: <span><%- data.phone %></span></div>
+                    </button>
+                    <div>Password: <span> <i class="fa-sharp fa-solid fa-star-of-life"> </i> <i
+                          class="fa-sharp fa-solid fa-star-of-life"></i> <i
+                          class="fa-sharp fa-solid fa-star-of-life"></i> <i
+                          class="fa-sharp fa-solid fa-star-of-life"></i> </span>
+                      <div>Wallet: <span><%- data.wallet %></span>
+
+                        <% if(typeof err !=="undefined" ){ %>
+                          <p class="text-danger"><%- err %></p>
+                          <% } %>
+
                             <button type="button" style="float: right;border: none;background: transparent;" class=""
-                        data-toggle="modal" data-target="#changepassword" data-whatever="@mdo"> 
-                        <i
-                          class="fa-sharp fa-regular fa-pen-to-square"></i>
-                        </button>
+                              data-toggle="modal" data-target="#changepassword" data-whatever="@mdo">
+                              <i class="fa-sharp fa-regular fa-pen-to-square"></i>
+                            </button>
 
 
 
-                          </div>
+                      </div>
+                    </div>
+
+                  </div>
                 </div>
+                <div></div>
 
+                <% if(typeof full !=='undefined' ){ %>
+                  <p class="text-danger"><%- full %></p>
+                  <% } %>
+                    <div class="card-body p-4 pt-0 text-black">
+                      <div class="mb-5">
+                        <p class="lead fw-normal mb-1">Address</p>
+                        <% if(data.address.length==0){ %>
+
+                          <h5 class="text-center py-3 ">you did't added any address. add address <a href=""
+                              data-mdb-ripple-color="dark" data-toggle="modal" data-target="#addressModal"
+                              data-mdb-ripple-color="dark">here</a></h5>
+                          <% } %>
+                            <% data.address.forEach((x,i)=>{ %>
+                              <div class="p-4 my-2" style="background-color: #f8f9fa;">
+                                <button type="button" class="btn btn-outline-dark mt-4 mr-3" data-toggle="modal"
+                                  data-target="#<%- x._id %>" data-mdb-ripple-color="dark"
+                                  style="z-index: 1;display: block;float: right">
+                                  <i style="float: right;" class="fa-sharp fa-regular fa-pen-to-square"></i>
+                                </button>
+                                <p class="font-italic mb-1"><%- x.name %> <br> <%- x.street %> <%- x.district %> <%-
+                                          x.state %>
+                                          <%- x.pincode %> <%- x.country %></p>
+                                <p>Phone : <span><%- x.phone %></span></p>
+
+
+                                <a href="/delete-address/<%- x._id %>">
+                                  <i class="fa-solid fa-trash"></i>
+                                </a>
+                              </div>
+
+
+
+
+
+
+
+
+
+
+                              <!-- Edit-Address-Modal -->
+
+                              <div class="modal fade" id="<%- x._id %>" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+
+                                      <h5 class="modal-title" id="exampleModalLabel">Edit Address</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                    </div>
+                                    <div class="modal-body">
+
+
+
+
+
+
+
+                                      <form action="/edit-address/<%- x._id %>" method="post">
+                                        <div class="mb-3">
+                                          <label for="exampleInputEmail1" class="form-label">Name</label>
+                                          <input type="text" class="form-control" value="<%- x.name %>" name="name"
+                                            id="exampleInputEmail1" aria-describedby="emailHelp">
+                                        </div>
+                                        <div class="mb-3">
+                                          <label for="exampleInputPassword1" class="form-label">Street</label>
+                                          <input type="text" name="street" value="<%- x.street %>" class="form-control"
+                                            id="exampleInputPassword1">
+                                        </div>
+                                        <div class="mb-3">
+                                          <label for="exampleInputPassword1" class="form-label">district</label>
+                                          <input type="text" name="district" value="<%- x.district %>"
+                                            class="form-control" id="exampleInputPassword1">
+                                        </div>
+                                        <div class="mb-3">
+                                          <label for="exampleInputPassword1" class="form-label">State</label>
+                                          <input type="text" name="state" value="<%- x.state %>" class="form-control"
+                                            id="exampleInputPassword1">
+                                        </div>
+                                        <div class="mb-3">
+                                          <label for="exampleInputPassword1" class="form-label">country</label>
+                                          <input type="text" name="country" value="<%- x.country %>"
+                                            class="form-control" id="exampleInputPassword1">
+                                        </div>
+                                        <div class="mb-3">
+                                          <label for="exampleInputPassword1" class="form-label">Phone number</label>
+                                          <input type="number" name="phone" value="<%- x.phone %>" class="form-control"
+                                            id="exampleInputPassword1">
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                      </form>
+
+
+
+
+
+
+
+
+                                    </div>
+
+
+                                  </div>
+                                </div>
+                              </div>
+
+                              <!-- ------------- -->
+
+                              <% }) %>
+                      </div>
+
+
+
+                    </div>
               </div>
             </div>
-            <div><button type="button" class="btn btn-outline-dark mt-4 mr-3" data-toggle="modal"
-                data-target="#addressModal" data-mdb-ripple-color="dark" style="z-index: 1;display: block;float: right">
-                Add Address
-              </button></div>
-              
-            <button type="button" class="btn btn-outline-dark  mt-4 mr-3 w-25"
-                data-mdb-ripple-color="dark"><a href="/orderlist"  data-mdb-ripple-color="dark" style="color: #000;">Orders</a></button>
-            <% if(typeof full !=='undefined' ){ %>
-              <p class="text-danger"><%- full %></p>
-              <% } %>
-                <div class="card-body p-4 pt-0 text-black">
-                  <div class="mb-5">
-                    <p class="lead fw-normal mb-1">Address</p>
-                    <% data.address.forEach((x,i)=>{ %>
-                      <div class="p-4 my-2" style="background-color: #f8f9fa;">
-                        <button type="button" class="btn btn-outline-dark mt-4 mr-3" data-toggle="modal"
-                          data-target="#<%- x._id %>" data-mdb-ripple-color="dark"
-                          style="z-index: 1;display: block;float: right">
-                          <i style="float: right;" class="fa-sharp fa-regular fa-pen-to-square"></i>
-                        </button>
-                        <p class="font-italic mb-1"><%- x.name %> <br> <%- x.street %> <%- x.district %> <%- x.state %>
-                                  <%- x.pincode %> <%- x.country %></p>
-                        <p>Phone : <span><%- x.phone %></span></p>
+          </div>
+        </div>
+    </section>
 
 
-                        <a href="/delete-address/<%- x._id %>">
-                          <i class="fa-solid fa-trash"></i>
-                        </a>
-                      </div>
+    <!-- Edit details modal -->
 
-
-
-
-
-
-
-
-
-
-                      <!-- Edit-Address-Modal -->
-
-                      <div class="modal fade" id="<%- x._id %>" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                            <div class="modal-header">
-
-                              <h5 class="modal-title" id="exampleModalLabel">Edit Address</h5>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-
-
-
-
-
-
-
-                              <form action="/edit-address/<%- x._id %>" method="post">
-                                <div class="mb-3">
-                                  <label for="exampleInputEmail1" class="form-label">Name</label>
-                                  <input type="text" class="form-control" value="<%- x.name %>" name="name"
-                                    id="exampleInputEmail1" aria-describedby="emailHelp">
-                                </div>
-                                <div class="mb-3">
-                                  <label for="exampleInputPassword1" class="form-label">Street</label>
-                                  <input type="text" name="street" value="<%- x.street %>" class="form-control"
-                                    id="exampleInputPassword1">
-                                </div>
-                                <div class="mb-3">
-                                  <label for="exampleInputPassword1" class="form-label">district</label>
-                                  <input type="text" name="district" value="<%- x.district %>" class="form-control"
-                                    id="exampleInputPassword1">
-                                </div>
-                                <div class="mb-3">
-                                  <label for="exampleInputPassword1" class="form-label">State</label>
-                                  <input type="text" name="state" value="<%- x.state %>" class="form-control"
-                                    id="exampleInputPassword1">
-                                </div>
-                                <div class="mb-3">
-                                  <label for="exampleInputPassword1" class="form-label">country</label>
-                                  <input type="text" name="country" value="<%- x.country %>" class="form-control"
-                                    id="exampleInputPassword1">
-                                </div>
-                                <div class="mb-3">
-                                  <label for="exampleInputPassword1" class="form-label">Phone number</label>
-                                  <input type="number" name="phone" value="<%- x.phone %>" class="form-control"
-                                    id="exampleInputPassword1">
-                                </div>
-
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                              </form>
-
-
-
-
-
-
-
-
-                            </div>
-
-
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- ------------- -->
-
-
-
-
-
-                      <% }) %>
-                  </div>
-
-
-
-                </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Edit profile</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action="/edit-user-profile" method="post">
+              <div class="form-group">
+                <label for="recipient-name" class="col-form-label">username:</label>
+                <input type="text" value="<%- data.username %>" class="form-control" id="recipient-name"
+                  name="username">
+              </div>
+              <div class="form-group">
+                <label for="recipient-name" class="col-form-label">Phone:</label>
+                <input type="text" value="<%- data.phone %>" class="form-control" id="recipient-name" name="phone">
+              </div>
+              <div class="form-group">
+                <label for="message-text" class="col-form-label">Email:</label>
+                <input type="text" value="<%- data.email %>" class="form-control" id="recipient-name" name="email">
+              </div>
+              <button type="submit" class="btn btn-primary">Update</button>
+            </form>
           </div>
         </div>
       </div>
     </div>
-  </section>
 
 
-  <!-- Edit details modal -->
 
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Edit profile</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form action="/edit-user-profile" method="post">
-            <div class="form-group">
-              <label for="recipient-name" class="col-form-label">username:</label>
-              <input type="text" value="<%- data.username %>" class="form-control" id="recipient-name" name="username">
-            </div>
-            <div class="form-group">
-              <label for="recipient-name" class="col-form-label">Phone:</label>
-              <input type="text" value="<%- data.phone %>" class="form-control" id="recipient-name" name="phone">
-            </div>
-            <div class="form-group">
-              <label for="message-text" class="col-form-label">Email:</label>
-              <input type="text" value="<%- data.email %>" class="form-control" id="recipient-name" name="email">
-            </div>
-            <button type="submit" class="btn btn-primary">Update</button>
-          </form>
+
+    <!-- Add address modal -->
+
+
+    <div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+
+            <h5 class="modal-title" id="exampleModalLabel">Edit Address</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+
+
+
+
+
+
+
+            <form action="/add-new-address" method="post">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Name</label>
+                <input type="text" class="form-control" name="name" id="exampleInputEmail1"
+                  aria-describedby="emailHelp">
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Street</label>
+                <input type="text" name="street" class="form-control" id="exampleInputPassword1">
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">district</label>
+                <input type="text" name="district" class="form-control" id="exampleInputPassword1">
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">State</label>
+                <input type="text" name="state" class="form-control" id="exampleInputPassword1">
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">country</label>
+                <input type="text" name="country" class="form-control" id="exampleInputPassword1">
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Phone number</label>
+                <input type="number" name="phone" class="form-control" id="exampleInputPassword1">
+              </div>
+
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+
+
+
+
+
+
+
+
+          </div>
+
+
         </div>
       </div>
     </div>
-  </div>
+
+    <!-- ------------- -->
 
 
 
 
-  <!-- Add address modal -->
-
-
-  <div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-
-          <h5 class="modal-title" id="exampleModalLabel">Edit Address</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-
-
-
-
-
-
-
-          <form action="/add-new-address" method="post">
-            <div class="mb-3">
-              <label for="exampleInputEmail1" class="form-label">Name</label>
-              <input type="text" class="form-control" name="name" id="exampleInputEmail1" aria-describedby="emailHelp">
-            </div>
-            <div class="mb-3">
-              <label for="exampleInputPassword1" class="form-label">Street</label>
-              <input type="text" name="street" class="form-control" id="exampleInputPassword1">
-            </div>
-            <div class="mb-3">
-              <label for="exampleInputPassword1" class="form-label">district</label>
-              <input type="text" name="district" class="form-control" id="exampleInputPassword1">
-            </div>
-            <div class="mb-3">
-              <label for="exampleInputPassword1" class="form-label">State</label>
-              <input type="text" name="state" class="form-control" id="exampleInputPassword1">
-            </div>
-            <div class="mb-3">
-              <label for="exampleInputPassword1" class="form-label">country</label>
-              <input type="text" name="country" class="form-control" id="exampleInputPassword1">
-            </div>
-            <div class="mb-3">
-              <label for="exampleInputPassword1" class="form-label">Phone number</label>
-              <input type="number" name="phone" class="form-control" id="exampleInputPassword1">
-            </div>
-
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
-
-
-
-
-
-
-
+    <!-- Modal -->
+    <div class="modal fade" id="changepassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Change Password</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action="/change-password" id="passform" method="post">
+              <input type="text" name="oldPass" class="form-control my-2" placeholder="Enter your old Password">
+              <input type="text" name="newPass" id="newPass" class="form-control my-2" placeholder="New Password">
+              <input type="text" name="newPassconfirm" id="newPassconfirm" onkeyup="check()" class="form-control my-2"
+                placeholder="re-enter New Password">
+              <p id="err" class="text-danger mb-3"></p>
+              <button class="btn-primary" id="myButton" type="submit">submit</button>
+            </form>
+          </div>
 
         </div>
-
-
       </div>
     </div>
-  </div>
 
-  <!-- ------------- -->
+    <script>
+      function check() {
+        console.log("key pressed !");
+        // = document.getElementById("#newPassconfirm").value()
 
+        const conf = $("#newPassconfirm").val()
+        const newPass = $("#newPass").val()
 
+        console.log("conffffffff");
+        console.log(conf);
+        console.log("neeeeeeeeew");
 
+        console.log(newPass);
+        if (conf !== newPass) {
+          console.log("ddj");
+          document.getElementById("err").innerHTML = "~~~~~~~~~~~~~"
+          $('#myButton').prop('disabled', true);
+        } else {
+          document.getElementById("err").innerHTML = ""
+          document.getElementById("myButton").removeAttribute("disabled");
+        }
 
-<!-- Modal -->
-<div class="modal fade" id="changepassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Change Password</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form action="/change-password" id="passform" method="post">
-          <input type="text" name="oldPass" class="form-control my-2" placeholder="Enter your old Password">
-          <input type="text" name="newPass" id="newPass" class="form-control my-2" placeholder="New Password">
-          <input type="text" name="newPassconfirm" id="newPassconfirm" onkeyup="check()" class="form-control my-2" placeholder="re-enter New Password">
-          <p id="err" class="text-danger mb-3"></p>
-            <button class="btn-primary" id="myButton" type="submit">submit</button>
-        </form>
-      </div>
-    
-    </div>
-  </div>
-</div>
-
-<script>
-  function  check(){
-  console.log("key pressed !");
-  // = document.getElementById("#newPassconfirm").value()
-
-  const conf =  $("#newPassconfirm").val()
-  const newPass =  $("#newPass").val()
-
-console.log("conffffffff");
-console.log(conf);
-console.log("neeeeeeeeew");
-
-console.log(newPass);
-  if(conf !== newPass){
-    console.log("ddj");
-  document.getElementById("err").innerHTML = "~~~~~~~~~~~~~"
-  $('#myButton').prop('disabled', true);
-  }else{
-    document.getElementById("err").innerHTML = ""
-    document.getElementById("myButton").removeAttribute("disabled");
-    }
- 
-  }
-</script>
+      }
+    </script>
 
 
 
 
 
 
-  <%- include("../layouts/footer.ejs") %>
+    <%- include("../layouts/footer.ejs") %>

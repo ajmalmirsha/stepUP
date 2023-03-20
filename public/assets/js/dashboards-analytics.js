@@ -22,6 +22,7 @@ const cata = document.getElementById("cata").value
 
 
 
+console.log(cata);
 
 const cc = JSON.parse(cata)
 

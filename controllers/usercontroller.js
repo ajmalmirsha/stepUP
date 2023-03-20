@@ -552,7 +552,7 @@ module.exports = {
         }
 
     },
-    user_profile: async (req,res)=>{
+    user_profile: async (req,res,next)=>{
         try {
             const data =  await user.findOne({email:req.session.email})
             res.render('profile/user-profile',{data,users:true})
@@ -561,7 +561,7 @@ module.exports = {
         }
     },
 
-    do_edit_profile: async (req,res)=>{
+    do_edit_profile: async (req,res,next)=>{
 
         try {
         await user.updateOne({email:req.session.email},{$set:{
@@ -578,7 +578,7 @@ module.exports = {
         }
         }
     },
-    change_password: async (req,res)=>{
+    change_password: async (req,res,next)=>{
     try {
     let old =  req.body.oldPass
     const newPass = req.body.newPass
@@ -621,8 +621,20 @@ module.exports = {
     next()
     }
     },
-    add_new_address: async (req,res)=>{
+    add_new_address: async (req,res,next)=>{
         try {
+            if(
+                req.body.name == ""||
+                req.body.street == ""||
+                req.body.district == ""||
+                req.body.state == ""||
+                req.body.country == ""||
+                req.body.phone == ""
+                
+                ){
+                    const data =  await user.findOne({email:req.session.email})
+                    res.render('profile/user-profile',{data,users:true,err:"all feilds are required !"})
+                }else{ 
           
                      await user.updateOne({email:req.session.email},{$push:
                         {address:
@@ -635,22 +647,37 @@ module.exports = {
                            phone:req.body.phone
                         }
                         }} )
+                        res.redirect('/user-profile')
+                    }
 
 
-                res.redirect('/user-profile')
+             
           
        
         } catch (error) {
             next()
         }
     },
-    edit_address: async (req,res)=>{
+    edit_address: async (req,res,next)=>{
         try {
-            await user.updateOne({email:req.session.email,"address._id":req.params.id},{$set:{
+            if(
+                req.body.name == ""||
+                req.body.street == ""||
+                req.body.district == ""||
+                req.body.state == ""||
+                req.body.country == ""||
+                req.body.phone == ""
+                
+                ){
+                    const data =  await user.findOne({email:req.session.email})
+                    res.render('profile/user-profile',{data,users:true,err:"all feilds are required !"})
+                }else{ 
+                     await user.updateOne({email:req.session.email,"address._id":req.params.id},{$set:{
                 "address.$": req.body
 
             }
-            })
+            })}
+          
             
             res.redirect("/user-profile")
         } catch (error) {
@@ -658,7 +685,7 @@ module.exports = {
 
         }
     },
-    delete_address: async (req,res)=>{
+    delete_address: async (req,res,next)=>{
         try {
             await user.updateOne({email:req.session.email},{
                 $pull:{
@@ -673,7 +700,7 @@ module.exports = {
 
         }
     },
-    show_checkout: async (req,res)=>{
+    show_checkout: async (req,res,next)=>{
         try {
         //     const cartData=await user.findOne({email:req.session.email}).populate('cart.productId').exec()
         //   if(cartData.cart.length !== 0){
@@ -707,7 +734,7 @@ module.exports = {
          next()   
         }
     },
-    Add_address_checkout: async (req,res)=>{
+    Add_address_checkout: async (req,res,next)=>{
         try {
           await user.updateOne({email:req.session.email},{$push:
                 {address:
@@ -730,7 +757,7 @@ module.exports = {
         }
     
     },
-    apply_coupon: async (req,res)=>{
+    apply_coupon: async (req,res,next)=>{
         try {
          const code = req.body.code
          const coupons =  await coupon.findOne({code:code})
@@ -775,7 +802,7 @@ module.exports = {
             next()
         }
     },
-    after_checkout: async (req,res)=>{
+    after_checkout: async (req,res,next)=>{
         try {
             const products = req.body
             const users = await user.findOne({email:req.session.email})
@@ -904,7 +931,7 @@ const today = new Date();
             next()
         }
     },
-    orderlist: async (req,res)=>{
+    orderlist: async (req,res,next)=>{
         try {
              const users = await user.findOne({email:req.session.email})
             const order = await orderModel.find({userId:users._id}).populate("product.productId").sort({date:-1}).exec()
@@ -914,16 +941,16 @@ const today = new Date();
             next()
         }
     },
-    order_succcess: async (req,res)=>{
+    order_succcess: async (req,res,next)=>{
         try {
             const order = await orderModel.findOne().sort({date:-1})
-            res.render('order/success',{order})
+            res.render('order/success',{order,users:true})
 
         } catch (error) {
             next()
         }
     },
-    vew_order: async (req,res)=>{
+    vew_order: async (req,res,next)=>{
         try {
             const data =  await orderModel
             .findOne({_id:req.params.id})
@@ -969,7 +996,7 @@ const today = new Date();
 
         }
     },
-    order_cancel: async (req,res)=>{
+    order_cancel: async (req,res,next)=>{
         try {
             const id = req.params.id
             const st = ""+id
@@ -994,7 +1021,7 @@ const today = new Date();
         }
     }
     ,
-    online_payment: async (req,res)=>{
+    online_payment: async (req,res,next)=>{
         try {
 
       const latestOrder = await orderModel

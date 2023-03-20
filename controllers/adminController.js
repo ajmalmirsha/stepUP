@@ -136,7 +136,7 @@ adddata: async (req,res,next)=>{
 },
 adminhome : async (req,res,next)=>{
     try{
-        const ord=await orderModel.find().populate({
+        const ord=await orderModel.find({status:"delevered"}).populate({
             path: 'product.productId',
             populate: {
                 path: 'catagory',

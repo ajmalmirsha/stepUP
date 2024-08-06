@@ -59,7 +59,7 @@ app.get("/user_logout", user.user_logout)
 
 //    !---------------------------------------------------------!
 
-//OTP MANAGMENT
+//OTP MANAGEMENT
 
 app.post("/usersignup", is_not, user.sendOTP)
 
@@ -70,7 +70,7 @@ app.get('/verifyotp', is_not_logged, user.verifyotps)
 //    !---------------------------------------------------------!
 
 
-// FORGOT PASSWORD MANAGMENT
+// FORGOT PASSWORD MANAGEMENT
 
 app.get('/forget-password', is_not_logged, user.forget_load)
 
